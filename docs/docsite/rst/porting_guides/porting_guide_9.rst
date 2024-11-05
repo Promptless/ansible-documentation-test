@@ -119,6 +119,13 @@ community.network
 
 community.vmware
 ~~~~~~~~~~~~~~~~
+community.network
+~~~~~~~~~~~~~~~~~
+
+- This collection and all content in it is unmaintained and deprecated (https://forum.ansible.com/t/8030). If you are interested in maintaining parts of the collection, please copy them to your own repository, and tell others about in the Forum discussion. See the `collection creator path <https://docs.ansible.com/ansible/devel/dev_guide/developing_collections_path.html>`__ for details.
+
+community.vmware
+~~~~~~~~~~~~~~~~
 
 - vmware_cluster_dpm - the module has been deprecated and will be removed in community.vmware 6.0.0 (https://github.com/ansible-collections/community.vmware/pull/2217).
 - vmware_cluster_drs_recommendations - the module has been deprecated and will be removed in community.vmware 6.0.0 (https://github.com/ansible-collections/community.vmware/pull/2218).
@@ -162,6 +169,24 @@ community.vmware
 Porting Guide for v9.9.0
 ========================
 
+Known Issues
+------------
+
+community.docker
+~~~~~~~~~~~~~~~~
+
+- docker_container - when specifying a MAC address for a container's network, and the network is attached after container creation (for example, due to idempotency checks), the MAC address is at least in some cases ignored by the Docker Daemon (https://github.com/ansible-collections/community.docker/pull/933).
+
+Deprecated Features
+-------------------
+
+community.docker
+~~~~~~~~~~~~~~~~
+
+- The collection deprecates support for all ansible-core versions that are currently End of Life, `according to the ansible-core support matrix <https://docs.ansible.com/ansible-core/devel/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix>`__. This means that the next major release of the collection will no longer support ansible-core 2.11, ansible-core 2.12, ansible-core 2.13, and ansible-core 2.14.
+
+community.routeros
+~~~~~~~~~~~~~~~~~~
 Known Issues
 ------------
 
@@ -229,6 +254,22 @@ community.general
 - homectl - the module does not work under Python 3.13 or newer, since it relies on the removed ``crypt`` standard library module (https://github.com/ansible-collections/community.general/issues/4691, https://github.com/ansible-collections/community.general/pull/8497).
 - udm_user - the module does not work under Python 3.13 or newer, since it relies on the removed ``crypt`` standard library module (https://github.com/ansible-collections/community.general/issues/4690, https://github.com/ansible-collections/community.general/pull/8497).
 
+Major Changes
+-------------
+
+containers.podman
+~~~~~~~~~~~~~~~~~
+
+- Add mount and unmount for volumes
+- Add multiple subnets for networks
+- Add new options for podman_container
+- Add new options to pod module
+- Add podman search
+- Improve idempotency for networking in podman_container
+- Redesign idempotency for Podman Pod module
+
+Removed Features
+----------------
 Major Changes
 -------------
 
@@ -315,6 +356,22 @@ containers.podman
 ~~~~~~~~~~~~~~~~~
 
 - Add quadlet support for Podman modules
+community.docker
+~~~~~~~~~~~~~~~~
+
+- docker_compose - the Docker Compose v1 module is deprecated and will be removed from community.docker 4.0.0. Please migrate to the ``community.docker.docker_compose_v2`` module, which works with Docker Compose v2 (https://github.com/ansible-collections/community.docker/issues/823, https://github.com/ansible-collections/community.docker/pull/833).
+- various modules and plugins - the ``ssl_version`` option has been deprecated and will be removed from community.docker 4.0.0. It has already been removed from Docker SDK for Python 7.0.0, and was only necessary in the past to work around SSL/TLS issues (https://github.com/ansible-collections/community.docker/pull/853).
+
+Porting Guide for v9.5.1
+========================
+
+Major Changes
+-------------
+
+containers.podman
+~~~~~~~~~~~~~~~~~
+
+- Add quadlet support for Podman modules
 
 fortinet.fortios
 ~~~~~~~~~~~~~~~~
@@ -375,6 +432,36 @@ fortinet.fortios
 
 Deprecated Features
 -------------------
+Deprecated Features
+-------------------
+
+amazon.aws
+~~~~~~~~~~
+
+- iam_role_info - in a release after 2026-05-01 paths must begin and end with ``/`` (https://github.com/ansible-collections/amazon.aws/pull/1998).
+
+Porting Guide for v9.3.0
+========================
+
+Major Changes
+-------------
+
+community.mysql
+~~~~~~~~~~~~~~~
+
+- Collection version 2.*.* is EOL, no more bugfixes will be backported. Please consider upgrading to the latest version.
+
+fortinet.fortios
+~~~~~~~~~~~~~~~~
+
+- Update all the boolean values to true/false in the documents and examples.
+- Update the document of log_fact.
+- Update the mismatched version message with version ranges.
+- Update the required ansible version to 2.14.
+- Update the supported version ranges instead of concrete version numbers to reduce the collection size.
+
+Deprecated Features
+-------------------
 
 - The ``inspur.sm`` collection is considered unmaintained and will be removed from Ansible 11 if no one starts maintaining it again before Ansible 11.
   See `Collections Removal Process for unmaintained collections <https://docs.ansible.com/ansible/devel/community/collection_contributors/collection_package_removal.html#unmaintained-collections>`__ for more details, including for how this can be cancelled (`https://forum.ansible.com/t/2854 <https://forum.ansible.com/t/2854>`__).
@@ -389,6 +476,19 @@ community.crypto
 
 - openssl_csr_pipe, openssl_privatekey_pipe, x509_certificate_pipe - the current behavior of check mode is deprecated and will change in community.crypto 3.0.0. The current behavior is similar to the modules without ``_pipe``: if the object needs to be (re-)generated, only the ``changed`` status is set, but the object is not updated. From community.crypto 3.0.0 on, the modules will ignore check mode and always act as if check mode is not active. This behavior can already achieved now by adding ``check_mode: false`` to the task. If you think this breaks your use-case of this module, please `create an issue in the community.crypto repository <https://github.com/ansible-collections/community.crypto/issues/new/choose>`__ (https://github.com/ansible-collections/community.crypto/issues/712, https://github.com/ansible-collections/community.crypto/pull/714).
 
+Porting Guide for v9.2.0
+========================
+
+Added Collections
+-----------------
+
+- community.library_inventory_filtering_v1 (version 1.0.0)
+
+Known Issues
+------------
+
+dellemc.openmanage
+~~~~~~~~~~~~~~~~~~
 Porting Guide for v9.2.0
 ========================
 
@@ -459,6 +559,18 @@ community.general
 
 community.hrobot
 ~~~~~~~~~~~~~~~~
+community.docker
+~~~~~~~~~~~~~~~~
+
+- docker_container - the default ``ignore`` for the ``image_name_mismatch`` parameter has been deprecated and will switch to ``recreate`` in community.docker 4.0.0. A deprecation warning will be printed in situations where the default value is used and where a behavior would change once the default changes (https://github.com/ansible-collections/community.docker/pull/703).
+
+community.general
+~~~~~~~~~~~~~~~~~
+
+- consul_acl - the module has been deprecated and will be removed in community.general 10.0.0. ``consul_token`` and ``consul_policy`` can be used instead (https://github.com/ansible-collections/community.general/pull/7901).
+
+community.hrobot
+~~~~~~~~~~~~~~~~
 
 - robot inventory plugin - the ``filters`` option has been renamed to ``simple_filters``. The old name will stop working in community.hrobot 2.0.0 (https://github.com/ansible-collections/community.hrobot/pull/94).
 
@@ -517,6 +629,18 @@ community.dns
 
 community.docker
 ~~~~~~~~~~~~~~~~
+community.crypto
+~~~~~~~~~~~~~~~~
+
+- Ansible markup will show up in raw form on ansible-doc text output for ansible-core before 2.15. If you have trouble deciphering the documentation markup, please upgrade to ansible-core 2.15 (or newer), or read the HTML documentation on https://docs.ansible.com/ansible/devel/collections/community/crypto/.
+
+community.dns
+~~~~~~~~~~~~~
+
+- Ansible markup will show up in raw form on ansible-doc text output for ansible-core before 2.15. If you have trouble deciphering the documentation markup, please upgrade to ansible-core 2.15 (or newer), or read the HTML documentation on https://docs.ansible.com/ansible/devel/collections/community/dns/.
+
+community.docker
+~~~~~~~~~~~~~~~~
 
 - Ansible markup will show up in raw form on ansible-doc text output for ansible-core before 2.15. If you have trouble deciphering the documentation markup, please upgrade to ansible-core 2.15 (or newer), or read the HTML documentation on https://docs.ansible.com/ansible/devel/collections/community/docker/.
 
@@ -558,6 +682,11 @@ Breaking Changes
 
 Ansible-core
 ~~~~~~~~~~~~
+Breaking Changes
+----------------
+
+Ansible-core
+~~~~~~~~~~~~
 
 - Any plugin using the config system and the `cli` entry to use the `timeout` from the command line, will see the value change if the use had configured it in any of the lower precedence methods. If relying on this behaviour to consume the global/generic timeout from the DEFAULT_TIMEOUT constant, please consult the documentation on plugin configuration to add the overlaping entries.
 - ansible-test - Test plugins that rely on containers no longer support reusing running containers. The previous behavior was an undocumented, untested feature.
@@ -571,6 +700,8 @@ amazon.aws
 - module_utils - ``module_utils.urls`` was previously deprecated and has been removed (https://github.com/ansible-collections/amazon.aws/pull/1540).
 - module_utils._version - vendored copy of distutils.version has been dropped (https://github.com/ansible-collections/amazon.aws/pull/1587).
 
+community.aws
+~~~~~~~~~~~~~
 community.aws
 ~~~~~~~~~~~~~
 
@@ -589,6 +720,8 @@ community.aws
 - s3_bucket_info - The module has been migrated from the ``community.aws`` collection. Playbooks using the Fully Qualified Collection Name for this module should be updated to use ``amazon.aws.s3_bucket_info``.
 - sts_assume_role - The module has been migrated from the ``community.aws`` collection. Playbooks using the Fully Qualified Collection Name for this module should be updated to use ``amazon.aws.sts_assume_role``.
 
+community.general
+~~~~~~~~~~~~~~~~~
 community.general
 ~~~~~~~~~~~~~~~~~
 
@@ -629,6 +762,24 @@ Major Changes
 
 amazon.aws
 ~~~~~~~~~~
+dellemc.enterprise_sonic
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+- sonic_aaa - Add default_auth attribute to the argspec to replace the deleted group and local attributes. This change allows for ordered login authentication. (https://github.com/ansible-collections/dellemc.enterprise_sonic/pull/195).
+
+hetzner.hcloud
+~~~~~~~~~~~~~~
+
+- Drop support for ansible-core 2.12
+- Drop support for python 3.7
+- hcloud-python 1.20.0 is now required for full compatibility
+- inventory plugin - Don't set the server image variables (`image_id`, `image_os_flavor` and `image_name`) when the server image is not defined.
+
+Major Changes
+-------------
+
+amazon.aws
+~~~~~~~~~~
 
 - aws_region_info - The module has been migrated from the ``community.aws`` collection. Playbooks using the Fully Qualified Collection Name for this module should be updated to use ``amazon.aws.aws_region_info``.
 - aws_s3_bucket_info - The module has been migrated from the ``community.aws`` collection. Playbooks using the Fully Qualified Collection Name for this module should be updated to use ``amazon.aws.aws_s3_bucket_info``.
@@ -643,6 +794,30 @@ amazon.aws
 - s3_bucket_info - The module has been migrated from the ``community.aws`` collection. Playbooks using the Fully Qualified Collection Name for this module should be updated to use ``amazon.aws.s3_bucket_info``.
 - sts_assume_role - The module has been migrated from the ``community.aws`` collection. Playbooks using the Fully Qualified Collection Name for this module should be updated to use ``amazon.aws.sts_assume_role``.
 
+chocolatey.chocolatey
+~~~~~~~~~~~~~~~~~~~~~
+
+- win_chocolatey - add options for specifying checksums
+- win_chocolatey_facts - add filter / gather_subset option
+
+cisco.ios
+~~~~~~~~~
+
+- This release removes a previously deprecated modules, and a few attributes from this collection. Refer to **Removed Features** section for details.
+
+cisco.nxos
+~~~~~~~~~~
+
+- Refer to **Removed Features** section for details.
+- This release removes four of the previously deprecated modules from this collection.
+
+cloudscale_ch.cloud
+~~~~~~~~~~~~~~~~~~~
+
+- Bump minimum required Ansible version to 2.13.0
+
+community.mysql
+~~~~~~~~~~~~~~~
 chocolatey.chocolatey
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -715,6 +890,19 @@ fortinet.fortios
 - Update Q&A with a resolution for Ansible Always Sending GET/PUT Requests as POST Requests.
 - Update the requirement.txt file to specify the sphinx_rtd_theme==1.3.0
 - update the required Ansible version to 2.14.0 in the runtime.yml file.
+- Add new fortios version 7.4.1.
+- Add readthedocs.yaml file.
+- Format the contents in the changelog.yml file.
+- Improve the `no_log` feature in some modules;
+- Improve the document for adding notes and examples in Q&A for modules using Integer number as the mkey.
+- Improve the documentation and example for `seq_num` in `fortios_router_static`;
+- Improve the documentation for `member_path` in all the modules;
+- Support new FOS versions.
+- Update Ansible version from 2.9 to 2.14.
+- Update Q&A regarding setting up FortiToken multi-factor authentication;
+- Update Q&A with a resolution for Ansible Always Sending GET/PUT Requests as POST Requests.
+- Update the requirement.txt file to specify the sphinx_rtd_theme==1.3.0
+- update the required Ansible version to 2.14.0 in the runtime.yml file.
 
 grafana.grafana
 ~~~~~~~~~~~~~~~
@@ -754,6 +942,8 @@ Removed Features
 
 Ansible-core
 ~~~~~~~~~~~~
+Ansible-core
+~~~~~~~~~~~~
 
 - ActionBase - remove deprecated ``_remote_checksum`` method
 - PlayIterator - remove deprecated ``cache_block_tasks`` and ``get_original_task`` methods
@@ -767,23 +957,7 @@ Ansible-core
 - inventory_cache - remove deprecated ``default.fact_caching_prefix`` ini configuration option, use ``defaults.fact_caching_prefix`` instead.
 - module_utils/basic.py - Removed Python 3.5 as a supported remote version. Python 2.7 or Python 3.6+ is now required.
 - stat - removed unused `get_md5` parameter.
-
-ansible.windows
-~~~~~~~~~~~~~~~
-
-- win_get_url - Removed the deprecated option alias ``passwordd``, use ``url_password`` instead.
-- win_get_url - Removed the deprecated option alias ``user`` and ``username``, use ``url_username`` instead.
-- win_package - Removed deprecated module option ``ensure``, use ``state`` instead.
-- win_package - Removed deprecated module option ``productid``, use ``product_id`` instead.
-- win_package - Removed deprecated module option ``username``, ``user_name``, ``password``, and ``user_password``. Use ``become`` with ``become_flags: logon_type=new_credentials logon_flags=netcredentials_only`` on the task instead to replicate the same functionality instead.
-- win_reboot - Removed backwards compatibility check where ``ignore_errors: true`` will be treated like ``ignore_unreachable: true``. Going forward ``ignore_errors: true`` will only ignore errors the plugin encountered and not an unreachable host. Use ``ignore_unreachable: true`` to ignore that error like any other module.
-- win_regedit - Removed support for using a ``path`` with forward slashes as a key separator. Using a forward slash has been deprecated since Ansible 2.9. If using forward slashes in the ``win_regedit`` ``path`` value, make sure to change the forward slash ``/`` to a backslash ``\``. If enclosed in double quotes the backslash will have to be doubled up.
-- win_updates - Removed deprecated alias ``blacklist``, use ``reject_list`` instead.
-- win_updates - Removed deprecated alias ``whitelist``, use ``accept_list`` instead.
-- win_updates - Removed deprecated module option ``use_scheduled_task``. This option did not change any functionality in the module and can be safely removed from the task entry.
-- win_uri - Removed the deprecated option alias ``password``, use ``url_password`` instead.
-- win_uri - Removed the deprecated option alias ``user`` and ``username``, use ``url_username`` instead.
-
+- Removed deprecated ``STRING_CONVERSION_ACTION`` configuration option.
 cisco.ios
 ~~~~~~~~~
 
@@ -837,6 +1011,21 @@ community.vmware
 
 community.windows
 ~~~~~~~~~~~~~~~~~
+community.hashi_vault
+~~~~~~~~~~~~~~~~~~~~~
+
+- The minimum supported version of ``ansible-core`` is now ``2.14``, support for ``2.13`` has been dropped (https://github.com/ansible-collections/community.hashi_vault/pull/403).
+
+community.vmware
+~~~~~~~~~~~~~~~~
+
+- Removed module util `version` (https://github.com/ansible-collections/community.vmware/issues/1639).
+- vmware_guest - removed specifying CDROM configuration as a dict, instead use a list (https://github.com/ansible-collections/community.vmware/issues/1472).
+- vmware_host_lockdown - removed deprecated states `absent` and `present` (https://github.com/ansible-collections/community.vmware/issues/1517).
+- vmware_rest_client - removed deprecated method `get_tag_by_category()` (https://github.com/ansible-collections/community.vmware/issues/1898).
+
+community.windows
+~~~~~~~~~~~~~~~~~
 
 - Removed testing for Server 2012 and Server 2012 R2 as they are reaching End of Life status from Microsoft. These OS versions may continue to work but will not be tested in CI.
 - win_nssm - Removed the deprecated module option ``app_parameters``, use ``arguments`` instead.
@@ -850,6 +1039,20 @@ dellemc.openmanage
 - The ``dellemc_get_firmware_inventory`` module is removed and replaced with the module ``idrac_firmware_info``.
 - The ``dellemc_get_system_inventory`` module is removed and replaced with the module ``idrac_system_info``.
 
+hetzner.hcloud
+~~~~~~~~~~~~~~
+
+- hcloud_datacenter_facts Removed deprecated facts module
+- hcloud_floating_ip_facts Removed deprecated facts module
+- hcloud_image_facts Removed deprecated facts module
+- hcloud_location_facts Removed deprecated facts module
+- hcloud_server_facts Removed deprecated facts module
+- hcloud_server_type_facts Removed deprecated facts module
+- hcloud_ssh_key_facts Removed deprecated facts module
+- hcloud_volume_facts Removed deprecated facts module
+
+Deprecated Features
+-------------------
 hetzner.hcloud
 ~~~~~~~~~~~~~~
 
@@ -892,12 +1095,14 @@ Deprecated Features
 
 Ansible-core
 ~~~~~~~~~~~~
+Ansible-core
+~~~~~~~~~~~~
 
 - Deprecated ini config option ``collections_paths``, use the singular form ``collections_path`` instead
 - Deprecated the env var ``ANSIBLE_COLLECTIONS_PATHS``, use the singular form ``ANSIBLE_COLLECTIONS_PATH`` instead
 - Old style vars plugins which use the entrypoints `get_host_vars` or `get_group_vars` are deprecated. The plugin should be updated to inherit from `BaseVarsPlugin` and define a `get_vars` method as the entrypoint.
 - Support for Windows Server 2012 and 2012 R2 has been removed as the support end of life from Microsoft is October 10th 2023. These versions of Windows will no longer be tested in this Ansible release and it cannot be guaranteed that they will continue to work going forward.
-- ``STRING_CONVERSION_ACTION`` config option is deprecated as it is no longer used in the Ansible Core code base.
+- ``STRING_CONVERSION_ACTION`` config option has been removed as it is no longer used in the Ansible Core code base.
 - the 'smart' option for setting a connection plugin is being removed as its main purpose (choosing between ssh and paramiko) is now irrelevant.
 - vault and unfault filters - the undocumented ``vaultid`` parameter is deprecated and will be removed in ansible-core 2.20. Use ``vault_id`` instead.
 - yum_repository - deprecated parameter 'keepcache' (https://github.com/ansible/ansible/issues/78693).
@@ -947,7 +1152,6 @@ community.crypto
 
 community.general
 ~~~~~~~~~~~~~~~~~
-
 - CmdRunner module utils - deprecate ``cmd_runner_fmt.as_default_type()`` formatter (https://github.com/ansible-collections/community.general/pull/6601).
 - MH VarsMixin module utils - deprecates ``VarsMixin`` and supporting classes in favor of plain ``vardict`` module util (https://github.com/ansible-collections/community.general/pull/6649).
 - The next major release, community.general 8.0.0, will drop support for ansible-core 2.11 and 2.12, which have been End of Life for some time now. This means that this collection no longer supports Python 2.6 on the target. Individual content might still work with unsupported ansible-core versions, but that can change at any time. Also please note that from now on, for every new major community.general release, we will drop support for all ansible-core versions that have been End of Life for more than a few weeks on the date of the major release (https://github.com/ansible-community/community-topics/discussions/271, https://github.com/ansible-collections/community.general/pull/7259).
@@ -980,6 +1184,16 @@ community.general
   for subscription repositories, which can only be enabled or disabled. Hence, mark the
   ``present`` and ``absent`` values of the ``state`` option as deprecated, slating them
   for removal in community.general 10.0.0
+as deprecated, and it will be removed in community.general 9.0.0
+  (https://github.com/ansible-collections/community.general/pull/6646).
+- redhat_subscription - the ``pool`` option is deprecated in favour of the
+  more precise and flexible ``pool_ids`` option
+  (https://github.com/ansible-collections/community.general/pull/6650).
+- rhsm_repository - ``state=present`` has not been working as expected for many years,
+  and it seems it was not noticed so far; also, "presence" is not really a valid concept
+  for subscription repositories, which can only be enabled or disabled. Hence, mark the
+  ``present`` and ``absent`` values of the ``state`` option as deprecated, slating them
+  for removal in community.general 10.0.0
   (https://github.com/ansible-collections/community.general/pull/6673).
 - stackdriver - module relies entirely on no longer existent API endpoints, and it will be removed in community.general 9.0.0 (https://github.com/ansible-collections/community.general/pull/6887).
 - webfaction_app - module relies entirely on no longer existent API endpoints, and it will be removed in community.general 9.0.0 (https://github.com/ansible-collections/community.general/pull/6909).
@@ -987,7 +1201,6 @@ community.general
 - webfaction_domain - module relies entirely on no longer existent API endpoints, and it will be removed in community.general 9.0.0 (https://github.com/ansible-collections/community.general/pull/6909).
 - webfaction_mailbox - module relies entirely on no longer existent API endpoints, and it will be removed in community.general 9.0.0 (https://github.com/ansible-collections/community.general/pull/6909).
 - webfaction_site - module relies entirely on no longer existent API endpoints, and it will be removed in community.general 9.0.0 (https://github.com/ansible-collections/community.general/pull/6909).
-
 community.postgresql
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -1026,7 +1239,6 @@ microsoft.ad
 
 purestorage.fusion
 ~~~~~~~~~~~~~~~~~~
-
 - fusion_api_client - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
 - fusion_array - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
 - fusion_az - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
@@ -1041,6 +1253,8 @@ purestorage.fusion
 - fusion_nig - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
 - fusion_pg - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
 - fusion_pp - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
+- fusion_pg - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
+- fusion_pp - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
 - fusion_ra - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
 - fusion_region - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
 - fusion_sc - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
@@ -1051,7 +1265,6 @@ purestorage.fusion
 - fusion_tn - FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
 - fusion_ts - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
 - fusion_volume - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
-
 t_systems_mms.icinga_director
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

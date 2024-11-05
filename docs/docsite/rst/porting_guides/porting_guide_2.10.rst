@@ -64,6 +64,13 @@ Modules
 * Version 2.10.0 of ansible-base changed the default mode of file-based tasks to ``0o600 & ~umask`` when the user did not specify a ``mode`` parameter on file-based tasks. This was in response to a CVE report which we have reconsidered. As a result, the mode change has been reverted in 2.10.1, and mode will now default to ``0o666 & ~umask`` as in previous versions of Ansible.
 * If you changed any tasks to specify less restrictive permissions while using 2.10.0, those changes will be unnecessary (but will do no harm) in 2.10.1.
 * To avoid the issue raised in CVE-2020-1736, specify a ``mode`` parameter in all file-based tasks that accept it.
+.. warning::
+
+	Links on this page may not point to the most recent versions of modules. We will update them when we can.
+
+* Version 2.10.0 of ansible-base changed the default mode of file-based tasks to ``0o600 & ~umask`` when the user did not specify a ``mode`` parameter on file-based tasks. This was in response to a CVE report which we have reconsidered. As a result, the mode change has been reverted in 2.10.1, and mode will now default to ``0o666 & ~umask`` as in previous versions of Ansible.
+* If you changed any tasks to specify less restrictive permissions while using 2.10.0, those changes will be unnecessary (but will do no harm) in 2.10.1.
+* To avoid the issue raised in CVE-2020-1736, specify a ``mode`` parameter in all file-based tasks that accept it.
 
 * ``dnf`` and ``yum`` - As of version 2.10.1, the ``dnf`` module (and ``yum`` action when it uses ``dnf``) now correctly validates GPG signatures of packages (CVE-2020-14365). If you see an error such as ``Failed to validate GPG signature for [package name]``, please ensure that you have imported the correct GPG key for the DNF repository and/or package you are using. One way to do this is with the ``rpm_key`` module. Although we discourage it, in some cases it may be necessary to disable the GPG check. This can be done by explicitly adding ``disable_gpg_check: yes`` in your ``dnf`` or ``yum`` task.
 
@@ -89,6 +96,29 @@ Noteworthy plugin changes
 * Cache plugins in collections can be used to cache data from inventory plugins. Previously, cache plugins in collections could only be used for fact caching.
 * Some undocumented arguments from ``FILE_COMMON_ARGUMENTS`` have been removed; plugins using these, in particular action plugins, need to be adjusted. The undocumented arguments which were removed are ``src``, ``follow``, ``force``, ``content``, ``backup``, ``remote_src``, ``regexp``, ``delimiter``, and ``directory_mode``.
 
+Action plugins which execute modules should use fully-qualified module names
+----------------------------------------------------------------------------
+
+* Action plugins that call modules should pass explicit, fully-qualified module names to ``_execute_module()`` whenever possible (eg, ``ansible.builtin.file`` rather than ``file``). This ensures that the task's collection search order is not consulted to resolve the module. Otherwise, a module from a collection earlier in the search path could be used when not intended.
+
+Porting custom scripts
+======================
+
+No notable changes
+
+Porting Guide for v2.10.7
+=========================
+
+Breaking Changes
+----------------
+
+community.general
+~~~~~~~~~~~~~~~~~
+
+- utm_proxy_auth_profile - the ``frontend_cookie_secret`` return value now contains a placeholder string instead of the module's ``frontend_cookie_secret`` parameter (https://github.com/ansible-collections/community.general/pull/1736).
+
+Major Changes
+-------------
 Action plugins which execute modules should use fully-qualified module names
 ----------------------------------------------------------------------------
 
@@ -167,6 +197,14 @@ community.network
 
   If you use Ansible 2.9 and explicitly use Cisco NSO modules from this collection, you will need to adjust your playbooks and roles to use FQCNs starting with ``cisco.nso.`` instead of ``community.network.``,
   for example replace ``community.network.nso_config`` in a task by ``cisco.nso.nso_config``.
+community.network
+~~~~~~~~~~~~~~~~~
+
+- For community.network 2.0.0, the Cisco NSO modules will be moved to the `cisco.nso <https://galaxy.ansible.com/cisco/nso>`_ collection.
+  A redirection will be inserted so that users using ansible-base 2.10 or newer do not have to change anything.
+
+  If you use Ansible 2.9 and explicitly use Cisco NSO modules from this collection, you will need to adjust your playbooks and roles to use FQCNs starting with ``cisco.nso.`` instead of ``community.network.``,
+  for example replace ``community.network.nso_config`` in a task by ``cisco.nso.nso_config``.
 
   If you use ansible-base and installed ``community.network`` manually and rely on the Cisco NSO modules, you have to make sure to install the ``cisco.nso`` collection as well.
   If you are using FQCNs, for example ``community.network.nso_config`` instead of ``nso_config``, it will continue working, but we still recommend to adjust the FQCNs as well.
@@ -214,6 +252,12 @@ community.general
   A redirection will be inserted so that users using ansible-base 2.10 or newer do not have to change anything.
 
   If you use Ansible 2.9 and explicitly use OC connection plugin from this collection, you will need to adjust your playbooks and roles to use FQCNs ``community.okd.oc`` instead of ``community.general.oc``.
+If you use ansible-base and installed ``community.general`` manually and rely on the Google modules, you have to make sure to install the ``community.google`` collection as well.
+  If you are using FQCNs, for example ``community.general.gcpubsub`` instead of ``gcpubsub``, it will continue working, but we still recommend to adjust the FQCNs as well.
+- For community.general 2.0.0, the OC connection plugin will be moved to the `community.okd <https://galaxy.ansible.com/community/okd>`_ collection.
+  A redirection will be inserted so that users using ansible-base 2.10 or newer do not have to change anything.
+
+  If you use Ansible 2.9 and explicitly use OC connection plugin from this collection, you will need to adjust your playbooks and roles to use FQCNs ``community.okd.oc`` instead of ``community.general.oc``.
 
   If you use ansible-base and installed ``community.general`` manually and rely on the OC connection plugin, you have to make sure to install the ``community.okd`` collection as well.
   If you are using FQCNs, in other words ``community.general.oc`` instead of ``oc``, it will continue working, but we still recommend to adjust this FQCN as well.
@@ -235,6 +279,21 @@ netbox.netbox
 - nb_lookup - Allow ID to be passed in and use ``.get`` instead of ``.filter``. (#376)
 - nb_lookup - Allow ``api_endpoint`` and ``token`` to be found through env. (#391)
 
+Deprecated Features
+-------------------
+
+community.aws
+~~~~~~~~~~~~~
+
+- ec2_vpc_igw_info - After 2022-06-22 the ``convert_tags`` parameter default value will change from ``False`` to ``True`` to match the collection standard behavior (https://github.com/ansible-collections/community.aws/pull/318).
+
+community.docker
+~~~~~~~~~~~~~~~~
+
+- docker_container - currently ``published_ports`` can contain port mappings next to the special value ``all``, in which case the port mappings are ignored. This behavior is deprecated for community.docker 2.0.0, at which point it will either be forbidden, or this behavior will be properly implemented similar to how the Docker CLI tool handles this (https://github.com/ansible-collections/community.docker/issues/8, https://github.com/ansible-collections/community.docker/pull/60).
+
+community.hashi_vault
+~~~~~~~~~~~~~~~~~~~~~
 Deprecated Features
 -------------------
 
@@ -285,6 +344,10 @@ community.general
   If you are using FQCNs, that is ``community.general.hetzner_failover_ip`` instead of ``hetzner_failover_ip``, it will continue working, but we still recommend to adjust the FQCNs as well.
 - For community.general 2.0.0, the ``docker`` modules and plugins will be moved to the `community.docker <https://galaxy.ansible.com/community/docker>`_ collection.
   A redirection will be inserted so that users using ansible-base 2.10 or newer do not have to change anything.
+If you use ansible-base and installed ``community.general`` manually and rely on the Hetzner Robot modules, you have to make sure to install the ``community.hrobot`` collection as well.
+  If you are using FQCNs, that is ``community.general.hetzner_failover_ip`` instead of ``hetzner_failover_ip``, it will continue working, but we still recommend to adjust the FQCNs as well.
+- For community.general 2.0.0, the ``docker`` modules and plugins will be moved to the `community.docker <https://galaxy.ansible.com/community/docker>`_ collection.
+  A redirection will be inserted so that users using ansible-base 2.10 or newer do not have to change anything.
 
   If you use Ansible 2.9 and explicitly use ``docker`` content from this collection, you will need to adjust your playbooks and roles to use FQCNs starting with ``community.docker.`` instead of ``community.general.``,
   for example replace ``community.general.docker_container`` in a task by ``community.docker.docker_container``.
@@ -316,6 +379,8 @@ community.network
 
 community.okd
 ~~~~~~~~~~~~~
+community.okd
+~~~~~~~~~~~~~
 
 - Add custom k8s module, integrate better Molecule tests (https://github.com/ansible-collections/community.okd/pull/7).
 - Add downstream build scripts to build redhat.openshift (https://github.com/ansible-collections/community.okd/pull/20).
@@ -325,6 +390,11 @@ community.okd
 - Initial content migration from community.kubernetes (https://github.com/ansible-collections/community.okd/pull/3).
 - openshift_auth - new module (migrated from k8s_auth in community.kubernetes) (https://github.com/ansible-collections/community.okd/pull/33).
 
+Removed Features
+----------------
+
+community.docker
+~~~~~~~~~~~~~~~~
 Removed Features
 ----------------
 
@@ -354,6 +424,11 @@ community.docker
 - docker_volume - no longer returns ``ansible_facts`` (https://github.com/ansible-collections/community.docker/pull/1).
 - docker_volume - the ``force`` option has been removed. Use ``recreate`` instead (https://github.com/ansible-collections/community.docker/pull/1).
 
+Deprecated Features
+-------------------
+
+community.general
+~~~~~~~~~~~~~~~~~
 Deprecated Features
 -------------------
 
@@ -445,6 +520,34 @@ Porting Guide for v2.10.0
 
 Known Issues
 ------------
+- Deprecated `nxos_interface_ospf` in favor of `nxos_ospf_interfaces` Resource Module.
+
+Porting Guide for v2.10.1
+=========================
+
+Major Changes
+-------------
+
+community.kubernetes
+~~~~~~~~~~~~~~~~~~~~
+
+- k8s - Add support for template parameter (https://github.com/ansible-collections/community.kubernetes/pull/230).
+- k8s_* - Add support for vaulted kubeconfig and src (https://github.com/ansible-collections/community.kubernetes/pull/193).
+
+Deprecated Features
+-------------------
+
+cisco.nxos
+~~~~~~~~~~
+
+- Deprecated `nxos_smu` in favor of `nxos_rpm` module.
+- The `nxos_ospf_vrf` module is deprecated by `nxos_ospfv2` and `nxos_ospfv3` Resource Modules.
+
+Porting Guide for v2.10.0
+=========================
+
+Known Issues
+------------
 
 - Due to a limitation in pip, you cannot ``pip install --upgrade`` from ansible-2.9 or earlier to ansible-2.10 or higher. Instead, you must explicitly use ``pip uninstall ansible`` before pip installing the new version. If you attempt to upgrade Ansible with pip without first uninstalling, the installer warns you to uninstall first.
 - The individual collections that make up the ansible-2.10.0 package can be viewed independently. However, they are not currently listed by ansible-galaxy. To view these collections with ansible-galaxy, explicitly specify where ansible has installed the collections -- ``COLLECTION_INSTALL=$(python -c 'import ansible, os.path ; print("%s/../ansible_collections" % os.path.dirname(ansible.__file__))') ansible-galaxy collection list -p "$COLLECTION_INSTALL"``.
@@ -461,6 +564,25 @@ Known Issues
   * fortios_system_nd_proxy
   * fortios_webfilter
 
+community.grafana
+~~~~~~~~~~~~~~~~~
+
+- grafana_datasource doesn't set password correctly (#113)
+
+Breaking Changes
+----------------
+
+- cisco.nxos.nxos_igmp_interface - no longer supports the deprecated ``oif_prefix`` and ``oif_source`` options. These have been superseded by ``oif_ps``.
+- community.grafana.grafana_dashboard - the parameter ``message`` is renamed to ``commit_message`` since ``message`` is used by Ansible Core engine internally.
+- purestorage.flashblade.purefb_fs - no longer supports the deprecated ``nfs`` option. This has been superseded by ``nfsv3``.
+
+amazon.aws
+~~~~~~~~~~
+
+- aws_s3 - can now delete versioned buckets even when they are not empty - set mode to delete to delete a versioned bucket and everything in it.
+
+ansible.windows
+~~~~~~~~~~~~~~~
 community.grafana
 ~~~~~~~~~~~~~~~~~
 
@@ -517,6 +639,8 @@ cisco.meraki
 
 community.general
 ~~~~~~~~~~~~~~~~~
+community.general
+~~~~~~~~~~~~~~~~~
 
 - The environment variable for the auth context for the oc.py connection plugin has been corrected (K8S_CONTEXT).  It was using an initial lowercase k by mistake. (https://github.com/ansible-collections/community.general/pull/377).
 - bigpanda - the parameter ``message`` was renamed to ``deployment_message`` since ``message`` is used by Ansible Core engine internally.
@@ -546,6 +670,18 @@ community.vmware
 - vmware_tag - now returns ``tag_status`` instead of Ansible internal key ``results``.
 - vmware_vmkernel - the options ``ip_address`` and ``subnet_mask`` have been removed; use the suboptions ``ip_address`` and ``subnet_mask`` of the ``network`` option instead.
 
+community.windows
+~~~~~~~~~~~~~~~~~
+
+- win_pester - no longer runs all ``*.ps1`` file in the directory specified due to it executing potentially unknown scripts. It will follow the default behaviour of only running tests for files that are like ``*.tests.ps1`` which is built into Pester itself.
+
+community.zabbix
+~~~~~~~~~~~~~~~~
+
+- zabbix_javagateway - options ``javagateway_pidfile``, ``javagateway_listenip``, ``javagateway_listenport`` and ``javagateway_startpollers`` renamed to ``zabbix_javagateway_xyz`` (see `UPGRADE.md <https://github.com/ansible-collections/community.zabbix/blob/main/docs/UPGRADE.md>`_).
+
+netbox.netbox
+~~~~~~~~~~~~~
 community.windows
 ~~~~~~~~~~~~~~~~~
 
@@ -615,6 +751,25 @@ Major Changes
 
 Ansible-base
 ~~~~~~~~~~~~
+theforeman.foreman
+~~~~~~~~~~~~~~~~~~
+
+- All modules were renamed to drop the ``foreman_`` and ``katello_`` prefixes.
+  Additionally to the prefix removal, the following modules were further ranamed:
+
+  * katello_upload to content_upload
+  * katello_sync to repository_sync
+  * katello_manifest to subscription_manifest
+  * foreman_search_facts to resource_info
+  * foreman_ptable to partition_table
+  * foreman_model to hardware_model
+  * foreman_environment to puppet_environment
+
+Major Changes
+-------------
+
+Ansible-base
+~~~~~~~~~~~~
 
 - Both ansible-doc and ansible-console's help command will error for modules and plugins whose return documentation cannot be parsed as YAML. All modules and plugins passing ``ansible-test sanity --test yamllint`` will not be affected by this.
 - Collections may declare a list of supported/tested Ansible versions for the collection. A warning is issued if a collection does not support the Ansible version that loads it (can also be configured as silent or a fatal error). Collections that do not declare supported Ansible versions do not issue a warning/error.
@@ -663,6 +818,14 @@ community.grafana
 
 community.kubernetes
 ~~~~~~~~~~~~~~~~~~~~
+community.grafana
+~~~~~~~~~~~~~~~~~
+
+- Add changelog management for ansible 2.10 (#112)
+- grafana_datasource ; adding additional_json_data param
+
+community.kubernetes
+~~~~~~~~~~~~~~~~~~~~
 
 - Add changelog and fragments and document changelog process (https://github.com/ansible-collections/community.kubernetes/pull/131).
 - helm - New module for managing Helm charts (https://github.com/ansible-collections/community.kubernetes/pull/61).
@@ -684,6 +847,14 @@ community.kubernetes
 - kubectl - Connection plugin migrated from Ansible 2.9 to Kubernetes collection.
 - openshift - Inventory source migrated from Ansible 2.9 to Kubernetes collection.
 
+community.libvirt
+~~~~~~~~~~~~~~~~~
+
+- added generic libvirt inventory plugin
+- removed libvirt_lxc inventory script
+
+dellemc.os10
+~~~~~~~~~~~~
 community.libvirt
 ~~~~~~~~~~~~~~~~~
 
@@ -731,6 +902,21 @@ f5networks.f5_modules
 - Broke apart bigip_device_auth_radius to implement radius server configuration in bigip_device_auth_server module. Refer to module documentation for usage details
 - Remove redundant parameters in f5_provider to fix disparity between documentation and module parameters
 
+gluster.gluster
+~~~~~~~~~~~~~~~
+
+- geo_rep - Added the independent module of geo rep with other gluster modules (https://github.com/gluster/gluster-ansible-collection/pull/2).
+
+ovirt.ovirt
+~~~~~~~~~~~
+
+- ovirt_disk - Add backup (https://github.com/oVirt/ovirt-ansible-collection/pull/57).
+- ovirt_disk - Support direct upload/download (https://github.com/oVirt/ovirt-ansible-collection/pull/35).
+- ovirt_host - Add ssh_port (https://github.com/oVirt/ovirt-ansible-collection/pull/60).
+- ovirt_vm_os_info - Creation of module (https://github.com/oVirt/ovirt-ansible-collection/pull/26).
+
+purestorage.flasharray
+~~~~~~~~~~~~~~~~~~~~~~
 gluster.gluster
 ~~~~~~~~~~~~~~~
 
@@ -808,6 +994,32 @@ community.crypto
 
 community.general
 ~~~~~~~~~~~~~~~~~
+Removed Features
+----------------
+
+Ansible-base
+~~~~~~~~~~~~
+
+- core - remove support for ``check_invalid_arguments`` in ``AnsibleModule``, ``AzureModule`` and ``UTMModule``.
+- core - removed deprecated ``STRING_CONVERSION_ACTION`` feature, which was introduced in version 2.8 and scheduled for removal in version 2.19. This feature allowed users to specify actions for string conversion of module parameters.
+
+ansible.netcommon
+~~~~~~~~~~~~~~~~~
+
+- module_utils.network.common.utils.ComplexDict has been removed
+
+ansible.windows
+~~~~~~~~~~~~~~~
+
+- win_stat - removed the deprecated ``get_md55`` option and ``md5`` return value.
+
+community.crypto
+~~~~~~~~~~~~~~~~
+
+- The ``letsencrypt`` module has been removed. Use ``acme_certificate`` instead.
+
+community.general
+~~~~~~~~~~~~~~~~~
 
 - conjur_variable lookup - has been moved to the ``cyberark.conjur`` collection. A redirection is active, which will be removed in version 2.0.0 (https://github.com/ansible-collections/community.general/pull/570).
 - core - remove support for ``check_invalid_arguments`` in ``UTMModule``.
@@ -862,6 +1074,27 @@ Ansible-base
 
 amazon.aws
 ~~~~~~~~~~
+- Remove _bigip_iapplx_package alias
+- Remove _bigip_security_address_list alias
+- Remove _bigip_security_port_list alias
+- Remove _bigip_traffic_group alias
+- Remove bigip_appsvcs_extension module
+- Remove bigip_asm_policy module
+
+Deprecated Features
+-------------------
+
+- The vyos.vyos.vyos_static_route module has been deprecated and will be removed in a later release; use vyos.vyos.vyos_static_routes instead.
+
+Ansible-base
+~~~~~~~~~~~~
+
+- Using the DefaultCallback without the correspodning doc_fragment or copying the documentation.
+- hash_behaviour - Deprecate ``hash_behaviour`` for future removal.
+- script inventory plugin - The 'cache' option is deprecated and will be removed in 2.12. Its use has been removed from the plugin since it has never had any effect.
+
+amazon.aws
+~~~~~~~~~~
 
 - All AWS Modules - ``aws_access_key``, ``aws_secret_key`` and ``security_token`` will be made mutually exclusive with ``profile`` after 2022-06-01.
 - cloudformation - The ``template_format`` option had no effect since Ansible 2.3 and will be removed after 2022-06-01
@@ -891,6 +1124,8 @@ ansible.windows
 
 community.aws
 ~~~~~~~~~~~~~
+community.aws
+~~~~~~~~~~~~~
 
 - cloudformation - The ``template_format`` option had no effect since Ansible 2.3 and will be removed after 2022-06-01
 - data_pipeline - The ``version`` option had no effect and will be removed after 2022-06-01
@@ -916,6 +1151,13 @@ community.aws
 - s3_sync - The ``retries`` option had no effect and will be removed after 2022-06-01
 - s3_sync - the ``retries`` option has been deprecated and will be removed after 2022-06-01. It has always been ignored by the module.
 
+community.crypto
+~~~~~~~~~~~~~~~~
+
+- openssl_csr - all values for the ``version`` option except ``1`` are deprecated. The value 1 denotes the current only standardized CSR version.
+
+community.general
+~~~~~~~~~~~~~~~~~
 community.crypto
 ~~~~~~~~~~~~~~~~
 

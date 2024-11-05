@@ -128,6 +128,23 @@ community.zabbix
 
 containers.podman
 ~~~~~~~~~~~~~~~~~
+Major Changes
+-------------
+
+cisco.meraki
+~~~~~~~~~~~~
+
+- meraki_mr_l7_firewall - New module
+- meraki_webhook_payload_template - New module
+
+community.zabbix
+~~~~~~~~~~~~~~~~
+
+- all modules are opting away from zabbix-api and using httpapi ansible.netcommon plugin. We will support zabbix-api for backwards compatibility until next major release. See our README.md for more information about how to migrate
+- zabbix_agent and zabbix_proxy roles are opting away from zabbix-api and use httpapi ansible.netcommon plugin. We will support zabbix-api for backwards compatibility until next major release. See our README.md for more information about how to migrate
+
+containers.podman
+~~~~~~~~~~~~~~~~~
 
 - New become plugin - podman_unshare
 - Podman generate systemd module
@@ -201,6 +218,24 @@ cisco.mso
 
 community.general
 ~~~~~~~~~~~~~~~~~
+fortinet.fortimanager
+~~~~~~~~~~~~~~~~~~~~~
+
+- Many fixes for Ansible sanity test warnings & errors.
+- Support FortiManager Schema 7.2.0 , 98 new modules
+
+Deprecated Features
+-------------------
+
+- The mellanox.onyx collection is considered unmaintained and will be removed from Ansible 8 if no one starts maintaining it again before Ansible 8. See `the removal process for details on how this works <https://github.com/ansible-collections/overview/blob/main/removal_from_ansible.rst#cancelling-removal-of-an-unmaintained-collection>`__ (https://github.com/ansible-community/community-topics/issues/136).
+
+cisco.mso
+~~~~~~~~~
+
+- The mso_schema_template_contract_filter contract_filter_type attribute is deprecated. The value is now deduced from filter_type.
+
+community.general
+~~~~~~~~~~~~~~~~~
 
 - ArgFormat module utils - deprecated along ``CmdMixin``, in favor of the ``cmd_runner_fmt`` module util (https://github.com/ansible-collections/community.general/pull/5370).
 - CmdMixin module utils - deprecated in favor of the ``CmdRunner`` module util (https://github.com/ansible-collections/community.general/pull/5370).
@@ -230,6 +265,8 @@ Deprecated Features
 - The dellemc.os6 collection is considered unmaintained and will be removed from Ansible 8 if no one starts maintaining it again before Ansible 8. See `the removal process for details on how this works <https://github.com/ansible-collections/overview/blob/main/removal_from_ansible.rst#cancelling-removal-of-an-unmaintained-collection>`__ (https://github.com/ansible-community/community-topics/issues/132).
 - The dellemc.os9 collection is considered unmaintained and will be removed from Ansible 8 if no one starts maintaining it again before Ansible 8. See `the removal process for details on how this works <https://github.com/ansible-collections/overview/blob/main/removal_from_ansible.rst#cancelling-removal-of-an-unmaintained-collection>`__ (https://github.com/ansible-community/community-topics/issues/133).
 
+community.general
+~~~~~~~~~~~~~~~~~
 community.general
 ~~~~~~~~~~~~~~~~~
 
@@ -320,6 +357,29 @@ Known Issues
 
 dellemc.openmanage
 ~~~~~~~~~~~~~~~~~~
+- postgresql_user - the ``groups`` argument has been deprecated and will be removed in ``community.postgresql 3.0.0``. Please use the ``postgresql_membership`` module to specify group/role memberships instead (https://github.com/ansible-collections/community.postgresql/issues/277).
+
+Deprecated Features
+-------------------
+
+community.hashi_vault
+~~~~~~~~~~~~~~~~~~~~~
+
+- vault_kv2_get lookup - the ``engine_mount_point option`` in the ``vault_kv2_get`` lookup only will change its default from ``kv`` to ``secret`` in community.hashi_vault version 4.0.0 (https://github.com/ansible-collections/community.hashi_vault/issues/279).
+
+Porting Guide for v6.1.0
+========================
+
+Added Collections
+-----------------
+
+- purestorage.fusion (version 1.0.2)
+
+Known Issues
+------------
+
+dellemc.openmanage
+~~~~~~~~~~~~~~~~~~
 
 - idrac_user - Issue(192043) The module may error out with the message ``unable to perform the import or export operation because there are pending attribute changes or a configuration job is in progress``. Wait for the job to complete and run the task again.
 - ome_application_alerts_smtp - Issue(212310) - The module does not provide a proper error message if the destination_address is more than 255 characters.
@@ -346,6 +406,22 @@ infoblox.nios_modules
 - Update `text` field of TXT Record `#128 <https://github.com/infobloxopen/infoblox-ansible/pull/128>`_
 - Update operation using `old_name` and `new_name` for the object with dummy name in `old_name` (which does not exist in system) will not create a new object in the system. An error will be thrown stating the object does not exist in the system `#129 <https://github.com/infobloxopen/infoblox-ansible/pull/129>`_
 
+Deprecated Features
+-------------------
+
+cisco.ios
+~~~~~~~~~
+
+- Deprecated ios_linkagg_module in favor of ios_lag_interfaces.
+
+community.aws
+~~~~~~~~~~~~~
+
+- aws_codebuild - The ``tags`` parameter currently uses a non-standard format and has been deprecated.  In release 6.0.0 this parameter will accept a simple key/value pair dictionary instead of the current list of dictionaries.  It is recommended to migrate to using the resource_tags parameter which already accepts the simple dictionary format (https://github.com/ansible-collections/community.aws/pull/1221).
+- route53_info - The CamelCase return values for ``HostedZones``, ``ResourceRecordSets``, and ``HealthChecks`` have been deprecated, in the future release you must use snake_case return values ``hosted_zones``, ``resource_record_sets``, and ``health_checks`` instead respectively".
+
+community.crypto
+~~~~~~~~~~~~~~~~
 Deprecated Features
 -------------------
 
@@ -408,6 +484,21 @@ community.general
 
 dellemc.openmanage
 ~~~~~~~~~~~~~~~~~~
+- get_url - document ``check_mode`` correctly with unreliable changed status (https://github.com/ansible/ansible/issues/65687).
+
+ansible.netcommon
+~~~~~~~~~~~~~~~~~
+
+- eos - When using eos modules on Ansible 2.9, tasks will occasionally fail with ``import_modules`` enabled. This can be avoided by setting ``import_modules: no``
+
+community.general
+~~~~~~~~~~~~~~~~~
+
+- pacman - ``update_cache`` cannot differentiate between up to date and outdated package lists and will report ``changed`` in both situations (https://github.com/ansible-collections/community.general/pull/4318).
+- pacman - binaries specified in the ``executable`` parameter must support ``--print-format`` in order to be used by this module. In particular, AUR helper ``yay`` is known not to currently support it (https://github.com/ansible-collections/community.general/pull/4312).
+
+dellemc.openmanage
+~~~~~~~~~~~~~~~~~~
 
 - idrac_user - Issue(192043) The module may error out with the message ``unable to perform the import or export operation because there are pending attribute changes or a configuration job is in progress``. Wait for the job to complete and run the task again.
 - ome_application_alerts_smtp - Issue(212310) - The module does not provide a proper error message if the destination_address is more than 255 characters.
@@ -422,6 +513,23 @@ dellemc.openmanage
 - ome_device_quick_deploy - Issue(216352) - The module does not display a proper error message if an unsupported value is provided for the ipv6_prefix_length and vlan_id parameters.
 - ome_smart_fabric_uplink - Issue(186024) - The module does not allow the creation of multiple uplinks of the same name even though it is supported by OpenManage Enterprise Modular. If an uplink is created using the same name as an existing uplink, the existing uplink is modified.
 
+purestorage.flasharray
+~~~~~~~~~~~~~~~~~~~~~~
+
+- purefa_admin - Once `max_login` and `lockout` have been set there is currently no way to rest these to zero except through the FlashArray GUI
+
+Breaking Changes
+----------------
+
+Ansible-core
+~~~~~~~~~~~~
+
+- Module Python Dependency - Drop support for Python 2.6 in module execution.
+- Templating - it is no longer allowed to perform arithmetic and concatenation operations outside of the jinja template (https://github.com/ansible/ansible/pull/75587)
+- The ``finalize`` method is no longer exposed in the globals for use in templating.
+
+amazon.aws
+~~~~~~~~~~
 purestorage.flasharray
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -471,7 +579,6 @@ arista.eos
 
 community.aws
 ~~~~~~~~~~~~~
-
 - aws_acm_facts -  Remove deprecated alias ``aws_acm_facts``.  Please use ``aws_acm_info`` instead.
 - aws_kms_facts -  Remove deprecated alias ``aws_kms_facts``.  Please use ``aws_kms_info`` instead.
 - aws_kms_info - Deprecated ``keys_attr`` field is now ignored (https://github.com/ansible-collections/community.aws/pull/838).
@@ -501,6 +608,12 @@ community.aws
 - elb_application_lb_facts -  Remove deprecated alias ``elb_application_lb_facts``.  Please use ``elb_application_lb_info`` instead.
 - elb_classic_lb_facts -  Remove deprecated alias ``elb_classic_lb_facts``.  Please use ``elb_classic_lb_info`` instead.
 - elb_target_facts -  Remove deprecated alias ``elb_target_facts``.  Please use ``elb_target_info`` instead.
+- ecs_taskdefinition_facts -  Remove deprecated alias ``ecs_taskdefinition_facts``.  Please use ``ecs_taskdefinition_info`` instead.
+- efs_facts -  Remove deprecated alias ``efs_facts``.  Please use ``efs_info`` instead.
+- elasticache_facts -  Remove deprecated alias ``elasticache_facts``.  Please use ``elasticache_info`` instead.
+- elb_application_lb_facts -  Remove deprecated alias ``elb_application_lb_facts``.  Please use ``elb_application_lb_info`` instead.
+- elb_classic_lb_facts -  Remove deprecated alias ``elb_classic_lb_facts``.  Please use ``elb_classic_lb_info`` instead.
+- elb_target_facts -  Remove deprecated alias ``elb_target_facts``.  Please use ``elb_target_info`` instead.
 - elb_target_group_facts -  Remove deprecated alias ``elb_target_group_facts``.  Please use ``elb_target_group_info`` instead.
 - iam - Removed deprecated ``community.aws.iam`` module. Please use ``community.aws.iam_user``, ``community.aws.iam_access_key`` or ``community.aws.iam_group`` (https://github.com/ansible-collections/community.aws/pull/839).
 - iam_cert_facts -  Remove deprecated alias ``iam_cert_facts``.  Please use ``iam_cert_info`` instead.
@@ -513,7 +626,6 @@ community.aws
 - rds_snapshot_facts -  Remove deprecated alias ``rds_snapshot_facts``.  Please use ``rds_snapshot_info`` instead.
 - redshift_facts -  Remove deprecated alias ``redshift_facts``.  Please use ``redshift_info`` instead.
 - route53_facts -  Remove deprecated alias ``route53_facts``.  Please use ``route53_info`` instead.
-
 community.general
 ~~~~~~~~~~~~~~~~~
 
@@ -551,6 +663,8 @@ community.vmware
 - vmware_cluster_vsan - The parameter alias ``enable_vsan`` has been removed, use ``enable`` instead.
 - vmware_guest - Virtualization Based Security has some requirements (``nested_virt``, ``secure_boot`` and ``iommu``) that the module silently enabled. They have to be enabled explicitly now.
 
+dellemc.openmanage
+~~~~~~~~~~~~~~~~~~
 dellemc.openmanage
 ~~~~~~~~~~~~~~~~~~
 
@@ -591,6 +705,33 @@ arista.eos
 - Updated base plugin references to ansible.netcommon.
 - `eos_facts` - change default gather_subset to `min` from `!config` (https://github.com/ansible-collections/arista.eos/issues/306).
 
+chocolatey.chocolatey
+~~~~~~~~~~~~~~~~~~~~~
+
+- win_chocolatey - Added choco_args option to pass additional arguments directly to Chocolatey.
+
+cisco.asa
+~~~~~~~~~
+
+- Minimum required ansible.netcommon version is 2.5.1.
+- Updated base plugin references to ansible.netcommon.
+
+cisco.ios
+~~~~~~~~~
+
+- Minimum required ansible.netcommon version is 2.5.1.
+- Updated base plugin references to ansible.netcommon.
+- facts - default value for gather_subset is changed to min instead of !config.
+
+cisco.iosxr
+~~~~~~~~~~~
+
+- Minimum required ansible.netcommon version is 2.5.1.
+- Updated base plugin references to ansible.netcommon.
+- `facts` - default value for `gather_subset` is changed to min instead of !config.
+
+cisco.ise
+~~~~~~~~~
 chocolatey.chocolatey
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -674,6 +815,13 @@ cisco.meraki
 
 cisco.nxos
 ~~~~~~~~~~
+cisco.meraki
+~~~~~~~~~~~~
+
+- meraki_mr_radio - New module
+
+cisco.nxos
+~~~~~~~~~~
 
 - The minimum required ansible.netcommon version has been bumped to v2.6.1.
 - Updated base plugin references to ansible.netcommon.
@@ -696,6 +844,13 @@ community.mysql
 
 - The community.mysql collection no longer supports ``Ansible 2.9`` and ``ansible-base 2.10``. While we take no active measures to prevent usage and there are no plans to introduce incompatible code to the modules, we will stop testing against ``Ansible 2.9`` and ``ansible-base 2.10``. Both will very soon be End of Life and if you are still using them, you should consider upgrading to the ``latest Ansible / ansible-core 2.11 or later`` as soon as possible (https://github.com/ansible-collections/community.mysql/pull/343).
 
+community.network
+~~~~~~~~~~~~~~~~~
+
+- The community.network collection no longer supports Ansible 2.9 and ansible-base 2.10. While we take no active measures to prevent usage, we will remove compatibility code and other compatility measures that will effectively prevent using most content from this collection with Ansible 2.9, and some content of this collection with ansible-base 2.10. Both Ansible 2.9 and ansible-base 2.10 will very soon be End of Life and if you are still using them, you should consider upgrading to ansible-core 2.11 or later as soon as possible (https://github.com/ansible-collections/community.network/pull/426).
+
+community.postgresql
+~~~~~~~~~~~~~~~~~~~~
 community.network
 ~~~~~~~~~~~~~~~~~
 
@@ -731,6 +886,28 @@ dellemc.openmanage
 f5networks.f5_modules
 ~~~~~~~~~~~~~~~~~~~~~
 
+- bigip_device_info - pagination logic has also been added to help with api stability.
+- bigip_device_info - the module no longer gathers information from all partitions on device. This change will stabalize the module by gathering resources only from the given partition and prevent the module from gathering way too much information that might result in crashing.
+
+fortinet.fortios
+~~~~~~~~~~~~~~~~
+
+- Support FortiOS 7.0.2, 7.0.3, 7.0.4, 7.0.5.
+
+frr.frr
+~~~~~~~
+
+- Minimum required ansible.netcommon version is 2.5.1.
+- Updated base plugin references to ansible.netcommon.
+
+ibm.qradar
+~~~~~~~~~~
+
+- Minimum required ansible.netcommon version is 2.5.1.
+- Updated base plugin references to ansible.netcommon.
+
+junipernetworks.junos
+~~~~~~~~~~~~~~~~~~~~~
 - bigip_device_info - pagination logic has also been added to help with api stability.
 - bigip_device_info - the module no longer gathers information from all partitions on device. This change will stabalize the module by gathering resources only from the given partition and prevent the module from gathering way too much information that might result in crashing.
 
@@ -800,6 +977,18 @@ Ansible-core
 
 community.general
 ~~~~~~~~~~~~~~~~~
+Ansible-core
+~~~~~~~~~~~~
+
+- Remove deprecated ``Templar.set_available_variables()`` method (https://github.com/ansible/ansible/issues/75828)
+- cli - remove deprecated ability to set verbosity before the sub-command (https://github.com/ansible/ansible/issues/75823)
+- copy - remove deprecated ``thirsty`` alias (https://github.com/ansible/ansible/issues/75824)
+- psrp - Removed fallback on ``put_file`` with older ``pypsrp`` versions. Users must have at least ``pypsrp>=0.4.0``.
+- url_argument_spec - remove deprecated ``thirsty`` alias for ``get_url`` and ``uri`` modules (https://github.com/ansible/ansible/issues/75825, https://github.com/ansible/ansible/issues/75826)
+- Removed deprecated ``STRING_CONVERSION_ACTION`` (https://github.com/ansible/ansible/issues/84220).
+
+community.general
+~~~~~~~~~~~~~~~~~
 
 - ali_instance_info - removed the options ``availability_zone``, ``instance_ids``, and ``instance_names``. Use filter item ``zone_id`` instead of ``availability_zone``, filter item ``instance_ids`` instead of ``instance_ids``, and filter item ``instance_name`` instead of ``instance_names`` (https://github.com/ansible-collections/community.general/pull/4516).
 - apt_rpm - removed the deprecated alias ``update-cache`` of ``update_cache`` (https://github.com/ansible-collections/community.general/pull/4516).
@@ -819,6 +1008,8 @@ community.general
 - xbps - removed the deprecated alias ``update-cache`` of ``update_cache`` (https://github.com/ansible-collections/community.general/pull/4516).
 - xfconf - the ``get`` state has been removed. Use the ``xfconf_info`` module instead (https://github.com/ansible-collections/community.general/pull/4516).
 
+community.hashi_vault
+~~~~~~~~~~~~~~~~~~~~~
 community.hashi_vault
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -845,7 +1036,6 @@ community.network
 
 community.vmware
 ~~~~~~~~~~~~~~~~
-
 - vcenter_extension_facts - The deprecated module ``vcenter_extension_facts`` has been removed, use ``vcenter_extension_info`` instead.
 - vmware_about_facts - The deprecated module ``vmware_about_facts`` has been removed, use ``vmware_about_info`` instead.
 - vmware_category_facts - The deprecated module ``vmware_category_facts`` has been removed, use ``vmware_category_info`` instead.
@@ -876,6 +1066,11 @@ community.vmware
 - vmware_host_vmnic_facts - The deprecated module ``vmware_host_vmnic_facts`` has been removed, use ``vmware_host_vmnic_info`` instead.
 - vmware_local_role_facts - The deprecated module ``vmware_local_role_facts`` has been removed, use ``vmware_local_role_info`` instead.
 - vmware_local_user_facts - The deprecated module ``vmware_local_user_facts`` has been removed, use ``vmware_local_user_info`` instead.
+- vmware_host_ssl_facts - The deprecated module ``vmware_host_ssl_facts`` has been removed, use ``vmware_host_ssl_info`` instead.
+- vmware_host_vmhba_facts - The deprecated module ``vmware_host_vmhba_facts`` has been removed, use ``vmware_host_vmhba_info`` instead.
+- vmware_host_vmnic_facts - The deprecated module ``vmware_host_vmnic_facts`` has been removed, use ``vmware_host_vmnic_info`` instead.
+- vmware_local_role_facts - The deprecated module ``vmware_local_role_facts`` has been removed, use ``vmware_local_role_info`` instead.
+- vmware_local_user_facts - The deprecated module ``vmware_local_user_facts`` has been removed, use ``vmware_local_user_info`` instead.
 - vmware_portgroup_facts - The deprecated module ``vmware_portgroup_facts`` has been removed, use ``vmware_portgroup_info`` instead.
 - vmware_resource_pool_facts - The deprecated module ``vmware_resource_pool_facts`` has been removed, use ``vmware_resource_pool_info`` instead.
 - vmware_tag_facts - The deprecated module ``vmware_tag_facts`` has been removed, use ``vmware_tag_info`` instead.
@@ -884,7 +1079,6 @@ community.vmware
 - vmware_vmkernel_facts - The deprecated module ``vmware_vmkernel_facts`` has been removed, use ``vmware_vmkernel_info`` instead.
 - vmware_vmkernel_ip_config - The deprecated module ``vmware_vmkernel_ip_config`` has been removed, use ``vmware_vmkernel`` instead.
 - vmware_vswitch_facts - The deprecated module ``vmware_vswitch_facts`` has been removed, use ``vmware_vswitch_info`` instead.
-
 Deprecated Features
 -------------------
 
@@ -929,6 +1123,8 @@ community.docker
 
 community.general
 ~~~~~~~~~~~~~~~~~
+community.general
+~~~~~~~~~~~~~~~~~
 
 - ansible_galaxy_install - deprecated support for ``ansible`` 2.9 and ``ansible-base`` 2.10 (https://github.com/ansible-collections/community.general/pull/4601).
 - dig lookup plugin - the ``DLV`` record type has been decommissioned in 2017 and support for it will be removed from community.general 6.0.0 (https://github.com/ansible-collections/community.general/pull/4618).
@@ -948,6 +1144,8 @@ community.hashi_vault
 - token_validate options - the shared auth option ``token_validate`` will change its default from ``True`` to ``False`` in community.hashi_vault version 4.0.0. The ``vault_login`` lookup and module will keep the default value of ``True`` (https://github.com/ansible-collections/community.hashi_vault/issues/248).
 - token_validate options - the shared auth option ``token_validate`` will change its default from ``true`` to ``false`` in community.hashi_vault version 4.0.0. The ``vault_login`` lookup and module will keep the default value of ``true`` (https://github.com/ansible-collections/community.hashi_vault/issues/248).
 
+community.network
+~~~~~~~~~~~~~~~~~
 community.network
 ~~~~~~~~~~~~~~~~~
 
