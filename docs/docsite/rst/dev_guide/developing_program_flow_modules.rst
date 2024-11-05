@@ -92,7 +92,6 @@ Which is expanded as:
 .. code-block:: python
 
     json_arguments = """{"param1": "test's quotes", "param2": "\"To be or not to be\" - Hamlet"}"""
-
 .. note:: Ansible outputs a :term:`JSON` string with bare quotes. Double quotes are
        used to quote string values, double quotes inside of string values are
        backslash escaped, and single quotes may appear unescaped inside of
@@ -188,7 +187,6 @@ The ``normal`` action plugin
 The ``normal`` action plugin executes the module on the remote host. It is
 the primary coordinator of much of the work to actually execute the module on
 the managed machine.
-
 * It loads the appropriate connection plugin for the task, which then transfers
   or executes as needed to create a connection to that host.
 * It adds any internal Ansible properties to the module's parameters (for
@@ -266,8 +264,7 @@ substitutions:
     :ref:`new-style Powershell modules <flow_powershell_modules>`.
 
 * Replacements that are used by ``ansible.module_utils`` code. These are internal replacement patterns. They may be used internally, in the above public replacements, but shouldn't be used directly by modules.
-
-  - :code:`"<<ANSIBLE_VERSION>>"` is substituted with the Ansible version.  In
+- :code:`"<<ANSIBLE_VERSION>>"` is substituted with the Ansible version.  In
     :ref:`new-style Python modules <flow_python_modules>` under the
     :ref:`Ansiballz` framework the proper way is to instead instantiate an
     `AnsibleModule` and then access the version from
@@ -331,7 +328,6 @@ importing a module. This lets Ansible run both the wrapper script and the module
     * Prior to Ansible 2.7, the module was executed by a second Python interpreter instead of being
       executed inside of the same process. This change was made once Python-2.4 support was dropped
       to speed up module execution.
-
 In Ansiballz, any imports of Python modules from the
 :py:mod:`ansible.module_utils` package trigger inclusion of that Python file
 into the zipfile. Instances of :code:`#<<INCLUDE_ANSIBLE_MODULE_COMMON>>` in
@@ -404,7 +400,6 @@ _ansible_diff
 ^^^^^^^^^^^^^
 
 Type: ``bool``
-
 With this parameter you can configure your module to show a unified diff of changes that will be applied to the templated files. To access ``_ansible_diff`` in a module, instantiate the ``AnsibleModule`` utility and access :attr:`AnsibleModule._diff`. You can also access this parameter using the ``diff`` keyword in your playbook, or the relevant environment variable. For more details, see :ref:`playbook_keywords` and the :ref:`DIFF_ALWAYS` configuration option.
 
 
@@ -469,11 +464,6 @@ Type: ``str``
 This argument passes the information to modules about their name. For more details see, the configuration option :ref:`DEFAULT_MODULE_NAME`.
 
 
-_ansible_string_conversion_action
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This argument provides instructions about what modules should do after the values of the user-specified module parameters are converted to strings. For more details, see the :ref:`STRING_CONVERSION_ACTION` configuration option.
-
-
 _ansible_keep_remote_files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -501,7 +491,6 @@ _ansible_tmpdir
 Type: ``str``
 
 This argument provides instructions to modules that all commands must use the designated temporary directory, if created. The action plugin designs this temporary directory.
-
 Modules can access this parameter by using the public ``tmpdir`` property. The ``tmpdir`` property will create a temporary directory if the action plugin did not set the parameter.
 
 The directory name is generated randomly, and the the root of the directory is determined by one of these:
@@ -589,8 +578,7 @@ The ``argument_spec`` provided to ``AnsibleModule`` defines the supported argume
 Example ``argument_spec``:
 
 .. code-block:: python
-
-    module = AnsibleModule(argument_spec=dict(
+module = AnsibleModule(argument_spec=dict(
         top_level=dict(
             type='dict',
             options=dict(
@@ -687,8 +675,7 @@ This section will discuss the behavioral attributes for arguments:
       },
 
 :removed_at_date:
-
-  ``removed_at_date`` indicates that a deprecated argument will be removed in a minor ansible-core release or major collection release after this date. Mutually exclusive with ``removed_in_version``, and must be used with ``removed_from_collection``.
+``removed_at_date`` indicates that a deprecated argument will be removed in a minor ansible-core release or major collection release after this date. Mutually exclusive with ``removed_in_version``, and must be used with ``removed_from_collection``.
 
   Example:
 
@@ -815,8 +802,7 @@ The following are optional arguments for ``AnsibleModule()``:
         ('path', 'content'),
         ('repository_url', 'repository_filename'),
       ],
-
-  In this example, the options ``path`` and ``content`` must not specified at the same time. Also the options ``repository_url`` and ``repository_filename`` must not be specified at the same time. But specifying ``path`` and ``repository_url`` is accepted.
+In this example, the options ``path`` and ``content`` must not specified at the same time. Also the options ``repository_url`` and ``repository_filename`` must not be specified at the same time. But specifying ``path`` and ``repository_url`` is accepted.
 
   To ensure that precisely one of two (or more) options is specified, combine ``mutually_exclusive`` with ``required_one_of``.
 
@@ -903,7 +889,6 @@ To declare that a module supports check mode, supply ``supports_check_mode=True`
     module = AnsibleModule(argument_spec, supports_check_mode=True)
 
 The module can determine whether it is called in check mode by checking the boolean value ``module.check_mode``. If it evaluates to ``True``, the module must take care not to do any modification.
-
 If ``supports_check_mode=False`` is specified, which is the default value, the module will exit in check mode with ``skipped=True`` and message ``remote module (<insert module name here>) does not support check mode``.
 
 Adding file options
