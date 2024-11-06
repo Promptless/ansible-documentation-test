@@ -790,13 +790,13 @@ Removed Features
 - The community.kubevirt collection has been removed from Ansible 6. It has not been working with the community.kubernetes collection included since Ansible 5.0.0, and unfortunately nobody managed to adjust the collection to work with kubernetes.core >= 2.0.0. If you need to use this collection, you need to manually install community.kubernetes < 2.0.0 together with community.kubevirt with ``ansible-galaxy collection install community.kubevirt 'community.kubernetes:<2.0.0'`` (https://github.com/ansible-community/community-topics/issues/92).
 
 Ansible-core
-~~~~~~~~~~~~
-
+~~~~~~~~~~~~```
 - Remove deprecated ``Templar.set_available_variables()`` method (https://github.com/ansible/ansible/issues/75828)
 - cli - remove deprecated ability to set verbosity before the sub-command (https://github.com/ansible/ansible/issues/75823)
 - copy - remove deprecated ``thirsty`` alias (https://github.com/ansible/ansible/issues/75824)
 - psrp - Removed fallback on ``put_file`` with older ``pypsrp`` versions. Users must have at least ``pypsrp>=0.4.0``.
 - url_argument_spec - remove deprecated ``thirsty`` alias for ``get_url`` and ``uri`` modules (https://github.com/ansible/ansible/issues/75825, https://github.com/ansible/ansible/issues/75826)
+- Remove deprecated ``STRING_CONVERSION_ACTION`` configuration option (https://github.com/ansible/ansible/issues/84220)
 
 community.general
 ~~~~~~~~~~~~~~~~~
@@ -821,6 +821,7 @@ community.general
 
 community.hashi_vault
 ~~~~~~~~~~~~~~~~~~~~~
+```
 
 - aws_iam auth - the deprecated alias ``aws_iam_login`` for the ``aws_iam`` value of the ``auth_method`` option has been removed (https://github.com/ansible-collections/community.hashi_vault/issues/194).
 - community.hashi_vault collection - support for Ansible 2.9 and ansible-base 2.10 has been removed (https://github.com/ansible-collections/community.hashi_vault/issues/189).

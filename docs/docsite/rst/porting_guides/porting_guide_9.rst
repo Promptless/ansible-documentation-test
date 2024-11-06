@@ -891,62 +891,9 @@ Deprecated Features
   Please update your FQCNs from ``t_systems_mms.icinga_director`` to ``telekom_mms.icinga_director``.
 
 Ansible-core
-~~~~~~~~~~~~
-
-- Deprecated ini config option ``collections_paths``, use the singular form ``collections_path`` instead
-- Deprecated the env var ``ANSIBLE_COLLECTIONS_PATHS``, use the singular form ``ANSIBLE_COLLECTIONS_PATH`` instead
-- Old style vars plugins which use the entrypoints `get_host_vars` or `get_group_vars` are deprecated. The plugin should be updated to inherit from `BaseVarsPlugin` and define a `get_vars` method as the entrypoint.
-- Support for Windows Server 2012 and 2012 R2 has been removed as the support end of life from Microsoft is October 10th 2023. These versions of Windows will no longer be tested in this Ansible release and it cannot be guaranteed that they will continue to work going forward.
-- ``STRING_CONVERSION_ACTION`` config option is deprecated as it is no longer used in the Ansible Core code base.
-- the 'smart' option for setting a connection plugin is being removed as its main purpose (choosing between ssh and paramiko) is now irrelevant.
-- vault and unfault filters - the undocumented ``vaultid`` parameter is deprecated and will be removed in ansible-core 2.20. Use ``vault_id`` instead.
-- yum_repository - deprecated parameter 'keepcache' (https://github.com/ansible/ansible/issues/78693).
-
-amazon.aws
-~~~~~~~~~~
-
-- ec2_instance - deprecation of ``tenancy`` and ``placement_group`` in favor of ``placement`` attribute  (https://github.com/ansible-collections/amazon.aws/pull/1825).
-- s3_object - support for passing object keys with a leading ``/`` has been deprecated and will be removed in a release after 2025-12-01 (https://github.com/ansible-collections/amazon.aws/pull/1549).
-
-ansible.netcommon
-~~~~~~~~~~~~~~~~~
-
-- libssh - the ssh_*_args options are now marked that they will be removed after 2026-01-01.
-
-ansible.windows
-~~~~~~~~~~~~~~~
-
-- Add warning when using Server 2012 or 2012 R2 with the ``setup`` module. These OS' are nearing the End of Life and will not be tested in CI when that time is reached.
-- win_domain - Module is deprecated in favour of the ``microsoft.ad.domain`` module, the ``ansible.windows.win_domain`` module will be removed in the ``3.0.0`` release of this collection.
-- win_domain_controller - Module is deprecated in favour of the ``microsoft.ad.domain_controller`` module, the ``ansible.windows.win_domain_controller`` module will be removed in the ``3.0.0`` release of this collection.
-- win_domain_membership - Module is deprecated in favour of the ``microsoft.ad.membership`` module, the ``ansible.windows.win_domain_membership`` module will be removed in the ``3.0.0`` release of this collection.
-
-cisco.ios
-~~~~~~~~~
-
-- ios_snmp_server - deprecate traps.envmon.fan with traps.envmon.fan_enable
-- ios_snmp_server - deprecate traps.mpls_vpn with traps.mpls
-- ospfv2 - removed passive_interface to passive_interfaces that supports a list of interfaces
-
-cisco.iosxr
-~~~~~~~~~~~
-
-- Deprecated iosxr_bgp module in favor of iosxr_bgp_global,iosxr_bgp_neighbor_address_family and iosxr_bgp_address_family.
-- iosxr_l2_interfaces - deprecate q_vlan with qvlan which allows vlans in str format e.g "any"
-
-community.ciscosmb
-~~~~~~~~~~~~~~~~~~
-
-- support for Python 2.6 nad 2.7
-- support for ansible 2.9
-
-community.crypto
-~~~~~~~~~~~~~~~~
-
-- get_certificate - the default ``false`` of the ``asn1_base64`` option is deprecated and will change to ``true`` in community.crypto 3.0.0 (https://github.com/ansible-collections/community.crypto/pull/600).
-
-community.general
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~```
+- ``STRING_CONVERSION_ACTION`` config option has been removed as it is no longer used in the Ansible Core code base.
+```
 
 - CmdRunner module utils - deprecate ``cmd_runner_fmt.as_default_type()`` formatter (https://github.com/ansible-collections/community.general/pull/6601).
 - MH VarsMixin module utils - deprecates ``VarsMixin`` and supporting classes in favor of plain ``vardict`` module util (https://github.com/ansible-collections/community.general/pull/6649).
