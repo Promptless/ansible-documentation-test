@@ -498,45 +498,7 @@ community.general
 - scaleway_security_group_rule - the module will require ``ipaddress`` installed when used with Python 2 from community.general 4.0.0 on. ``ipaddress`` is part of the Python 3 standard library, but can be installed for Python 2 from pypi (https://github.com/ansible-collections/community.general/pull/2459).
 
 inspur.sm
-~~~~~~~~~
-
-- add_ad_group - This feature will be removed in inspur.sm.add_ad_group 3.0.0. replaced with inspur.sm.ad_group.
-- add_ldap_group - This feature will be removed in inspur.sm.add_ldap_group 3.0.0. replaced with inspur.sm.ldap_group.
-- add_user - This feature will be removed in inspur.sm.add_user 3.0.0. replaced with inspur.sm.user.
-- add_user_group - This feature will be removed in inspur.sm.add_user_group 3.0.0. replaced with inspur.sm.user_group.
-- del_ad_group - This feature will be removed in inspur.sm.del_ad_group 3.0.0. replaced with inspur.sm.ad_group.
-- del_ldap_group - This feature will be removed in inspur.sm.del_ldap_group 3.0.0. replaced with inspur.sm.ldap_group.
-- del_user - This feature will be removed in inspur.sm.del_user 3.0.0. replaced with inspur.sm.user.
-- del_user_group - This feature will be removed in inspur.sm.del_user_group 3.0.0. replaced with inspur.sm.user_group.
-- edit_ad_group - This feature will be removed in inspur.sm.edit_ad_group 3.0.0. replaced with inspur.sm.ad_group.
-- edit_ldap_group - This feature will be removed in inspur.sm.edit_ldap_group 3.0.0. replaced with inspur.sm.ldap_group.
-- edit_user - This feature will be removed in inspur.sm.edit_user 3.0.0. replaced with inspur.sm.user.
-- edit_user_group - This feature will be removed in inspur.sm.edit_user_group 3.0.0. replaced with inspur.sm.user_group.
-
-Porting Guide for v4.0.0
-========================
-
-Known Issues
-------------
-
-Ansible-core
-~~~~~~~~~~~~
-
-- ansible-test - The ``pylint`` sanity test no longer correctly detects "bad" variable names for non-constants. See `issue 3701 <https://github.com/PyCQA/pylint/issues/3701>`_ for additional details.
-
-dellemc.openmanage
-~~~~~~~~~~~~~~~~~~
-
-- idrac_user - Issue(192043) Module may error out with the message ``unable to perform the import or export operation because there are pending attribute changes or a configuration job is in progress``. Wait for the job to complete and run the task again.
-- ome_configuration_compliance_info - Issue(195592) Module may error out with the message ``unable to process the request because an error occurred``. If the issue persists, report it to the system administrator.
-- ome_smart_fabric - Issue(185322) Only three design types are supported by OpenManage Enterprise Modular but the module successfully creates a fabric when the design type is not supported.
-- ome_smart_fabric_uplink - Issue(186024) ome_smart_fabric_uplink module does not allow the creation of multiple uplinks of the same name even though this is supported by OpenManage Enterprise Modular. If an uplink is created using the same name as an existing uplink, the existing uplink is modified.
-
-fortinet.fortios
-~~~~~~~~~~~~~~~~
-
-- Modules for monitor API are not versioned yet.
-
+~~~~~~~~~```
 Breaking Changes
 ----------------
 
@@ -548,9 +510,8 @@ Ansible-core
 - Replaced the in-tree dependency resolver with an external implementation that pip >= 20.3 uses now by default — ``resolvelib``. (https://github.com/ansible/ansible/issues/71784)
 - The ``meta`` module now supports tags for user-defined tasks. Internal ``meta`` tasks continue to always run. (https://github.com/ansible/ansible/issues/64558)
 - ansible-galaxy login command has been removed (see `issue 71560 <https://github.com/ansible/ansible/issues/71560>`_)
-
-ansible.netcommon
-~~~~~~~~~~~~~~~~~
+- Removed deprecated STRING_CONVERSION_ACTION (https://github.com/ansible/ansible/issues/84220).
+```
 
 - Removed vendored ipaddress package from collection. If you use ansible_collections.ansible.netcommon.plugins.module_utils.compat.ipaddress in your collection, you will need to change this to import ipaddress instead. If your content using ipaddress supports Python 2.7, you will additionally need to make sure that the user has the ipaddress package installed. Please refer to https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html#importing-and-using-shared-code to see how to safely import external packages that may be missing from the user's system A backport of ipaddress for Python 2.7 is available at https://pypi.org/project/ipaddress/
 
