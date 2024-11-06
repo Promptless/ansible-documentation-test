@@ -499,7 +499,7 @@ community.general
 
 inspur.sm
 ~~~~~~~~~```
-- STRING_CONVERSION_ACTION - This feature has been removed in Ansible 2.19. It was deprecated and is no longer used in the Ansible Core code base. There is no alternative at the moment. A different mechanism would have to be implemented in the current code base. (https://github.com/ansible/ansible/issues/84220)
+- Removed the deprecated `STRING_CONVERSION_ACTION` feature from Ansible-core as of version 2.19. This feature, introduced in version 2.8, allowed users to specify actions for string conversion of module parameters. Initially defaulting to 'warn', it was planned to change to 'error' in version 2.12. As of version 2.19, this feature is no longer used, and references to it have been deleted with no alternative provided. (https://github.com/ansible/ansible/issues/84220)
 ```
 
 - Removed vendored ipaddress package from collection. If you use ansible_collections.ansible.netcommon.plugins.module_utils.compat.ipaddress in your collection, you will need to change this to import ipaddress instead. If your content using ipaddress supports Python 2.7, you will additionally need to make sure that the user has the ipaddress package installed. Please refer to https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html#importing-and-using-shared-code to see how to safely import external packages that may be missing from the user's system A backport of ipaddress for Python 2.7 is available at https://pypi.org/project/ipaddress/
@@ -600,7 +600,55 @@ community.grafana
 - introduce "skip_version_check" parameter in grafana_teams and grafana_folder modules (#147)
 
 community.mysql
-~~~~~~~~~~~~~~~```
+~~~~~~~~~~~~~~~
+
+- mysql_replication - add deprecation warning that the ``Is_Slave`` and ``Is_Master`` return values will be replaced with ``Is_Primary`` and ``Is_Replica`` in ``community.mysql`` 3.0.0 (https://github.com/ansible-collections/community.mysql/pull/147).
+- mysql_replication - the choices of the ``state`` option containing ``master`` will be finally replaced with the alternative ``primary`` choices in ``community.mysql`` 3.0.0, add deprecation warnings (https://github.com/ansible-collections/community.mysql/pull/150).
+- mysql_replication - the mode options values ``getslave``, ``startslave``, ``stopslave``, ``resetslave``, ``resetslaveall` and the master_use_gtid option ``slave_pos`` are deprecated (see the alternative values) and will be removed in ``community.mysql`` 3.0.0 (https://github.com/ansible-collections/community.mysql/pull/97).
+- mysql_replication - the return value ``Is_Slave`` and ``Is_Master`` will be replaced with ``Is_Replica`` and ``Is_Primary`` in ``community.mysql`` 3.0.0 (https://github.com/ansible-collections/community.mysql/issues/145).
+- mysql_replication - the word ``SLAVE`` in messages returned by the module will be changed to ``REPLICA`` in ``community.mysql`` 2.0.0 (https://github.com/ansible-collections/community.mysql/issues/98).
+- mysql_replication - the word ``master`` in messages returned by the module will be replaced with ``primary`` in ``community.mysql`` 3.0.0 (https://github.com/ansible-collections/community.mysql/issues/145).
+- mysql_replication - the word ``slave`` in messages returned by the module replaced with ``replica`` (https://github.com/ansible-collections/community.mysql/issues/98).
+- mysql_user - the ``REQUIRESSL`` is an alias for the ``ssl`` key in the ``tls_requires`` option in ``community.mysql`` 2.0.0 and support will be dropped altogether in ``community.mysql`` 3.0.0 (https://github.com/ansible-collections/community.mysql/issues/121).
+
+fortinet.fortios
+~~~~~~~~~~~~~~~~
+
+- New module fortios_configuration_fact
+- New module fortios_json_generic
+- New module fortios_monitor
+- New module fortios_monitor_fact
+
+junipernetworks.junos
+~~~~~~~~~~~~~~~~~~~~~
+
+- Please refer to ansible.netcommon `changelog <https://github.com/ansible-collections/ansible.netcommon/blob/main/changelogs/CHANGELOG.rst#ansible-netcommon-collection-release-notes>`_ for more details.
+- Requires ansible.netcommon v2.0.0+ to support `ansible_network_single_user_mode` and `ansible_network_import_modules`.
+
+netapp.ontap
+~~~~~~~~~~~~
+
+- na_ontap_autosupport - Added REST support to the module.
+
+openvswitch.openvswitch
+~~~~~~~~~~~~~~~~~~~~~~~
+
+- There is no major changes for this particular release and it was tagged by mistake and cannot be reverted.
+
+servicenow.servicenow
+~~~~~~~~~~~~~~~~~~~~~
+
+- refactored client to inherit from AnsibleModule
+- supports OpenID Connect authentication protocol
+- supports bearer tokens for authentication
+
+vyos.vyos
+~~~~~~~~~
+
+- Please refer to ansible.netcommon `changelog <https://github.com/ansible-collections/ansible.netcommon/blob/main/changelogs/CHANGELOG.rst#ansible-netcommon-collection-release-notes>`_ for more details.
+- Requires ansible.netcommon v2.0.0+ to support `ansible_network_single_user_mode` and `ansible_network_import_modules`
+- ipaddress is no longer in ansible.netcommon. For Python versions without ipaddress (< 3.0), the ipaddress package is now required.
+
 Removed Features
 ----------------
 
@@ -614,8 +662,9 @@ Ansible-core
 - The deprecated ``ansible.constants.get_config()`` has been removed.
 - The deprecated ``ansible.constants.mk_boolean()`` has been removed.
 - `with_*` loops are no longer optimized for modules whose `name` parameters can take lists (mostly package managers). Use `name` instead of looping over individual names with `with_items` and friends.
-- Removed deprecated `STRING_CONVERSION_ACTION` (https://github.com/ansible/ansible/issues/84220).
-```
+
+community.general
+~~~~~~~~~~~~~~~~~
 
 - The ``ome_device_info``, ``idrac_firmware`` and ``idrac_server_config_profile``  modules have now been migrated from community.general to the `dellemc.openmanage <https://galaxy.ansible.com/dellemc/openmanage>`_ Ansible collection.
   If you use ansible-base 2.10 or newer, redirections have been provided.

@@ -403,7 +403,78 @@ Operates verbose logging and logging of external commands that a module executes
 _ansible_diff
 ^^^^^^^^^^^^^
 
-Type: ``bool``_ansible_keep_remote_files
+Type: ``bool``
+
+With this parameter you can configure your module to show a unified diff of changes that will be applied to the templated files. To access ``_ansible_diff`` in a module, instantiate the ``AnsibleModule`` utility and access :attr:`AnsibleModule._diff`. You can also access this parameter using the ``diff`` keyword in your playbook, or the relevant environment variable. For more details, see :ref:`playbook_keywords` and the :ref:`DIFF_ALWAYS` configuration option.
+
+
+_ansible_verbosity
+^^^^^^^^^^^^^^^^^^
+
+Type: ``int``
+
+You can use this argument to control the level (0 for none) of verbosity in logging. 
+
+
+_ansible_selinux_special_fs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Type: ``list``
+Elements: ``strings``
+
+This argument provides modules with the names of file systems which should have a special SELinux context. They are used by the ``AnsibleModule`` methods which operate on files (changing attributes, moving, and copying).
+
+Most modules can use the built-in ``AnsibleModule`` methods to manipulate files. To access in a module that needs to know about these special context file systems, instantiate ``AnsibleModule`` and examine the list in :attr:`AnsibleModule._selinux_special_fs`.
+
+This argument replaces :attr:`ansible.module_utils.basic.SELINUX_SPECIAL_FS` from :ref:`module_replacer`. In the module replacer framework the argument was formatted as a comma-separated string of file system names. Under the Ansiballz framework it is a list. You can access ``_ansible_selinux_special_fs`` using the corresponding environment variable. For more details, see the :ref:`DEFAULT_SELINUX_SPECIAL_FS` configuration option.
+
+.. versionadded:: 2.1
+
+
+_ansible_syslog_facility
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+This argument controls which syslog facility the module logs to. Most modules should just use the :meth:`AnsibleModule.log` function which will then make use of this. If a module has to use this on its own, it should instantiate the ``AnsibleModule`` method and then retrieve the name of the syslog facility from :attr:`AnsibleModule._syslog_facility`. The Ansiballz code is less elegant than the :ref:`module_replacer` code:
+
+.. code-block:: python
+
+        # Old module_replacer way
+        import syslog
+        syslog.openlog(NAME, 0, syslog.LOG_USER)
+
+        # New Ansiballz way
+        import syslog
+        facility_name = module._syslog_facility
+        facility = getattr(syslog, facility_name, syslog.LOG_USER)
+        syslog.openlog(NAME, 0, facility)
+
+For more details, see the :ref:`DEFAULT_SYSLOG_FACILITY` configuration option.
+
+.. versionadded:: 2.1
+
+
+_ansible_version
+^^^^^^^^^^^^^^^^
+
+This argument passes the version of Ansible to the module. To access it, a module should instantiate the ``AnsibleModule`` method and then retrieve the version from :attr:`AnsibleModule.ansible_version`. This replaces :attr:`ansible.module_utils.basic.ANSIBLE_VERSION` from :ref:`module_replacer`.
+
+.. versionadded:: 2.1
+
+
+_ansible_module_name
+^^^^^^^^^^^^^^^^^^^^
+
+Type: ``str``
+
+This argument passes the information to modules about their name. For more details see, the configuration option :ref:`DEFAULT_MODULE_NAME`.
+
+
+_ansible_string_conversion_action
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This argument provides instructions about what modules should do after the values of the user-specified module parameters are converted to strings. For more details, see the :ref:`STRING_CONVERSION_ACTION` configuration option.
+
+
+_ansible_keep_remote_files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Type: ``bool``
