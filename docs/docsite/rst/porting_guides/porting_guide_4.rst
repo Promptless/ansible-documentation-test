@@ -74,6 +74,7 @@ Modules or plugins using these private methods should use the public functions i
 Changes to :mod:`ansible.module_utils.common.parameters`
 --------------------------------------------------------
 
+
 The following functions in :mod:`ansible.module_utils.common.parameters` are now private and should not be used directly. Use :meth:`ArgumentSpecValidator.validate() <ansible.module_utils.common.arg_spec.ArgumentSpecValidator.validate>` instead.
 
     - ``list_no_log_values``
@@ -131,6 +132,7 @@ Porting custom scripts
 ======================
 
 No notable changes
+
 
 Porting Guide for v4.10.0
 =========================
@@ -259,6 +261,7 @@ containers.podman
 - Add systemd generation for pods
 - Generate systemd service files for containers
 
+
 gluster.gluster
 ~~~~~~~~~~~~~~~
 
@@ -383,6 +386,7 @@ Major Changes
 community.vmware
 ~~~~~~~~~~~~~~~~
 
+
 - vmware_object_custom_attributes_info - added a new module to gather custom attributes of an object (https://github.com/ansible-collections/community.vmware/pull/851).
 
 dellemc.openmanage
@@ -480,6 +484,7 @@ Deprecated Features
 ansible.windows
 ~~~~~~~~~~~~~~~
 
+
 - win_reboot - Unreachable hosts can be ignored with ``ignore_errors: True``, this ability will be removed in a future version. Use ``ignore_unreachable: True`` to ignore unreachable hosts instead. - https://github.com/ansible-collections/ansible.windows/issues/62
 
 community.docker
@@ -499,44 +504,7 @@ community.general
 
 inspur.sm
 ~~~~~~~~~
-
-- add_ad_group - This feature will be removed in inspur.sm.add_ad_group 3.0.0. replaced with inspur.sm.ad_group.
-- add_ldap_group - This feature will be removed in inspur.sm.add_ldap_group 3.0.0. replaced with inspur.sm.ldap_group.
-- add_user - This feature will be removed in inspur.sm.add_user 3.0.0. replaced with inspur.sm.user.
-- add_user_group - This feature will be removed in inspur.sm.add_user_group 3.0.0. replaced with inspur.sm.user_group.
-- del_ad_group - This feature will be removed in inspur.sm.del_ad_group 3.0.0. replaced with inspur.sm.ad_group.
-- del_ldap_group - This feature will be removed in inspur.sm.del_ldap_group 3.0.0. replaced with inspur.sm.ldap_group.
-- del_user - This feature will be removed in inspur.sm.del_user 3.0.0. replaced with inspur.sm.user.
-- del_user_group - This feature will be removed in inspur.sm.del_user_group 3.0.0. replaced with inspur.sm.user_group.
-- edit_ad_group - This feature will be removed in inspur.sm.edit_ad_group 3.0.0. replaced with inspur.sm.ad_group.
-- edit_ldap_group - This feature will be removed in inspur.sm.edit_ldap_group 3.0.0. replaced with inspur.sm.ldap_group.
-- edit_user - This feature will be removed in inspur.sm.edit_user 3.0.0. replaced with inspur.sm.user.
-- edit_user_group - This feature will be removed in inspur.sm.edit_user_group 3.0.0. replaced with inspur.sm.user_group.
-
-Porting Guide for v4.0.0
-========================
-
-Known Issues
-------------
-
-Ansible-core
-~~~~~~~~~~~~
-
-- ansible-test - The ``pylint`` sanity test no longer correctly detects "bad" variable names for non-constants. See `issue 3701 <https://github.com/PyCQA/pylint/issues/3701>`_ for additional details.
-
-dellemc.openmanage
-~~~~~~~~~~~~~~~~~~
-
-- idrac_user - Issue(192043) Module may error out with the message ``unable to perform the import or export operation because there are pending attribute changes or a configuration job is in progress``. Wait for the job to complete and run the task again.
-- ome_configuration_compliance_info - Issue(195592) Module may error out with the message ``unable to process the request because an error occurred``. If the issue persists, report it to the system administrator.
-- ome_smart_fabric - Issue(185322) Only three design types are supported by OpenManage Enterprise Modular but the module successfully creates a fabric when the design type is not supported.
-- ome_smart_fabric_uplink - Issue(186024) ome_smart_fabric_uplink module does not allow the creation of multiple uplinks of the same name even though this is supported by OpenManage Enterprise Modular. If an uplink is created using the same name as an existing uplink, the existing uplink is modified.
-
-fortinet.fortios
-~~~~~~~~~~~~~~~~
-
-- Modules for monitor API are not versioned yet.
-
+```
 Breaking Changes
 ----------------
 
@@ -548,9 +516,9 @@ Ansible-core
 - Replaced the in-tree dependency resolver with an external implementation that pip >= 20.3 uses now by default — ``resolvelib``. (https://github.com/ansible/ansible/issues/71784)
 - The ``meta`` module now supports tags for user-defined tasks. Internal ``meta`` tasks continue to always run. (https://github.com/ansible/ansible/issues/64558)
 - ansible-galaxy login command has been removed (see `issue 71560 <https://github.com/ansible/ansible/issues/71560>`_)
+- Removed deprecated `STRING_CONVERSION_ACTION` feature. This feature, introduced in version 2.8, allowed users to specify actions for string conversion of module parameters. It was unused by version 2.19 and has been deleted without an alternative mechanism. (https://github.com/ansible/ansible/issues/84220)
+```
 
-ansible.netcommon
-~~~~~~~~~~~~~~~~~
 
 - Removed vendored ipaddress package from collection. If you use ansible_collections.ansible.netcommon.plugins.module_utils.compat.ipaddress in your collection, you will need to change this to import ipaddress instead. If your content using ipaddress supports Python 2.7, you will additionally need to make sure that the user has the ipaddress package installed. Please refer to https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html#importing-and-using-shared-code to see how to safely import external packages that may be missing from the user's system A backport of ipaddress for Python 2.7 is available at https://pypi.org/project/ipaddress/
 
@@ -595,6 +563,7 @@ Major Changes
 
 Ansible-core
 ~~~~~~~~~~~~
+
 
 - A collection can be reinstalled with new version requirements without using the ``--force`` flag. The collection's dependencies will also be updated if necessary with the new requirements. Use ``--upgrade`` to force transitive dependency updates.
 - AnsibleModule - use ``ArgumentSpecValidator`` class for validating argument spec and remove private methods related to argument spec validation. Any modules using private methods should now use the ``ArgumentSpecValidator`` class or the appropriate validation function.
@@ -651,6 +620,7 @@ community.grafana
 
 community.mysql
 ~~~~~~~~~~~~~~~
+
 
 - mysql_replication - add deprecation warning that the ``Is_Slave`` and ``Is_Master`` return values will be replaced with ``Is_Primary`` and ``Is_Replica`` in ``community.mysql`` 3.0.0 (https://github.com/ansible-collections/community.mysql/pull/147).
 - mysql_replication - the choices of the ``state`` option containing ``master`` will be finally replaced with the alternative ``primary`` choices in ``community.mysql`` 3.0.0, add deprecation warnings (https://github.com/ansible-collections/community.mysql/pull/150).
@@ -716,8 +686,10 @@ Ansible-core
 community.general
 ~~~~~~~~~~~~~~~~~
 
+
 - The ``ome_device_info``, ``idrac_firmware`` and ``idrac_server_config_profile``  modules have now been migrated from community.general to the `dellemc.openmanage <https://galaxy.ansible.com/dellemc/openmanage>`_ Ansible collection.
   If you use ansible-base 2.10 or newer, redirections have been provided.
+
 
   If you use Ansible 2.9 and installed this collection, you need to adjust the FQCNs (``community.general.idrac_firmware`` → ``dellemc.openmanage.idrac_firmware``) and make sure to install the dellemc.openmanage collection.
 - The deprecated ali_instance_facts module has been removed. Use ali_instance_info instead (https://github.com/ansible-collections/community.general/pull/1924).
@@ -744,6 +716,7 @@ community.general
 - The deprecated oneview_network_set_facts module has been removed. Use oneview_network_set_info instead (https://github.com/ansible-collections/community.general/pull/1924).
 - The deprecated oneview_san_manager_facts module has been removed. Use oneview_san_manager_info instead (https://github.com/ansible-collections/community.general/pull/1924).
 - The deprecated online_server_facts module has been removed. Use online_server_info instead (https://github.com/ansible-collections/community.general/pull/1924).
+
 - The deprecated online_user_facts module has been removed. Use online_user_info instead (https://github.com/ansible-collections/community.general/pull/1924).
 - The deprecated ovirt module has been removed. Use ovirt.ovirt.ovirt_vm instead (https://github.com/ansible-collections/community.general/pull/1924).
 - The deprecated ovirt_affinity_label_facts module has been removed. Use ovirt.ovirt.ovirt_affinity_label_info instead (https://github.com/ansible-collections/community.general/pull/1924).
@@ -768,6 +741,7 @@ community.general
 - The deprecated ovirt_tag_facts module has been removed. Use ovirt.ovirt.ovirt_tag_info instead (https://github.com/ansible-collections/community.general/pull/1924).
 - The deprecated ovirt_template_facts module has been removed. Use ovirt.ovirt.ovirt_template_info instead (https://github.com/ansible-collections/community.general/pull/1924).
 - The deprecated ovirt_user_facts module has been removed. Use ovirt.ovirt.ovirt_user_info instead (https://github.com/ansible-collections/community.general/pull/1924).
+
 - The deprecated ovirt_vm_facts module has been removed. Use ovirt.ovirt.ovirt_vm_info instead (https://github.com/ansible-collections/community.general/pull/1924).
 - The deprecated ovirt_vmpool_facts module has been removed. Use ovirt.ovirt.ovirt_vmpool_info instead (https://github.com/ansible-collections/community.general/pull/1924).
 - The deprecated purefa_facts module has been removed. Use purestorage.flasharray.purefa_info instead (https://github.com/ansible-collections/community.general/pull/1924).
@@ -793,6 +767,7 @@ community.general
 - django_manage - the parameter ``liveserver`` has been removed (https://github.com/ansible-collections/community.general/pull/1926).
 - idrac_redfish_config - the parameters ``manager_attribute_name`` and ``manager_attribute_value`` have been removed. Use ``manager_attributes`` instead (https://github.com/ansible-collections/community.general/pull/1926).
 - iso_extract - the alias ``thirsty`` has been removed. Use ``force`` instead (https://github.com/ansible-collections/community.general/pull/1926).
+
 - ldap_entry - the ``params`` parameter is now completely removed. Using it already triggered an error since community.general 0.1.2 (https://github.com/ansible-collections/community.general/pull/2257).
 - pulp_repo - the ``feed_client_cert`` parameter no longer defaults to the value of the ``client_cert`` parameter (https://github.com/ansible-collections/community.general/pull/1926).
 - pulp_repo - the ``feed_client_key`` parameter no longer defaults to the value of the ``client_key`` parameter (https://github.com/ansible-collections/community.general/pull/1926).
@@ -802,6 +777,7 @@ community.general
 - redfish_config - the parameters ``bios_attribute_name`` and ``bios_attribute_value`` have been removed. Use ``bios_attributes`` instead (https://github.com/ansible-collections/community.general/pull/1926).
 - syspatch - the ``apply`` parameter has been removed. This is the default mode, so simply removing it will not change the behavior (https://github.com/ansible-collections/community.general/pull/1926).
 - xbps - the ``force`` parameter has been removed. It did not have any effect (https://github.com/ansible-collections/community.general/pull/1926).
+
 
 community.network
 ~~~~~~~~~~~~~~~~~
@@ -866,6 +842,7 @@ community.crypto
 
 community.general
 ~~~~~~~~~~~~~~~~~
+
 
 - apt_rpm - deprecated invalid parameter alias ``update-cache``, will be removed in 5.0.0 (https://github.com/ansible-collections/community.general/pull/1927).
 - composer - deprecated invalid parameter aliases ``working-dir``, ``global-command``, ``prefer-source``, ``prefer-dist``, ``no-dev``, ``no-scripts``, ``no-plugins``, ``optimize-autoloader``, ``classmap-authoritative``, ``apcu-autoloader``, ``ignore-platform-reqs``, will be removed in 5.0.0 (https://github.com/ansible-collections/community.general/pull/1927).
