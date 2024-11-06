@@ -498,22 +498,7 @@ community.general
 - scaleway_security_group_rule - the module will require ``ipaddress`` installed when used with Python 2 from community.general 4.0.0 on. ``ipaddress`` is part of the Python 3 standard library, but can be installed for Python 2 from pypi (https://github.com/ansible-collections/community.general/pull/2459).
 
 inspur.sm
-~~~~~~~~~
-
-- add_ad_group - This feature will be removed in inspur.sm.add_ad_group 3.0.0. replaced with inspur.sm.ad_group.
-- add_ldap_group - This feature will be removed in inspur.sm.add_ldap_group 3.0.0. replaced with inspur.sm.ldap_group.
-- add_user - This feature will be removed in inspur.sm.add_user 3.0.0. replaced with inspur.sm.user.
-- add_user_group - This feature will be removed in inspur.sm.add_user_group 3.0.0. replaced with inspur.sm.user_group.
-- del_ad_group - This feature will be removed in inspur.sm.del_ad_group 3.0.0. replaced with inspur.sm.ad_group.
-- del_ldap_group - This feature will be removed in inspur.sm.del_ldap_group 3.0.0. replaced with inspur.sm.ldap_group.
-- del_user - This feature will be removed in inspur.sm.del_user 3.0.0. replaced with inspur.sm.user.
-- del_user_group - This feature will be removed in inspur.sm.del_user_group 3.0.0. replaced with inspur.sm.user_group.
-- edit_ad_group - This feature will be removed in inspur.sm.edit_ad_group 3.0.0. replaced with inspur.sm.ad_group.
-- edit_ldap_group - This feature will be removed in inspur.sm.edit_ldap_group 3.0.0. replaced with inspur.sm.ldap_group.
-- edit_user - This feature will be removed in inspur.sm.edit_user 3.0.0. replaced with inspur.sm.user.
-- edit_user_group - This feature will be removed in inspur.sm.edit_user_group 3.0.0. replaced with inspur.sm.user_group.
-
-Porting Guide for v4.0.0
+~~~~~~~~~Porting Guide for v4.0.0
 ========================
 
 Known Issues
@@ -548,6 +533,7 @@ Ansible-core
 - Replaced the in-tree dependency resolver with an external implementation that pip >= 20.3 uses now by default — ``resolvelib``. (https://github.com/ansible/ansible/issues/71784)
 - The ``meta`` module now supports tags for user-defined tasks. Internal ``meta`` tasks continue to always run. (https://github.com/ansible/ansible/issues/64558)
 - ansible-galaxy login command has been removed (see `issue 71560 <https://github.com/ansible/ansible/issues/71560>`_)
+- Removed the deprecated `STRING_CONVERSION_ACTION` feature, which was scheduled for removal in version 2.19. This feature allowed users to specify actions for string conversion of module parameters. There is no alternative at the moment. (https://github.com/ansible/ansible/issues/84220)
 
 ansible.netcommon
 ~~~~~~~~~~~~~~~~~
