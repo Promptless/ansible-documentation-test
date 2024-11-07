@@ -417,7 +417,7 @@ You can use this argument to control the level (0 for none) of verbosity in logg
 
 
 _ansible_selinux_special_fs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Type: ``list``
 Elements: ``strings``
@@ -469,11 +469,6 @@ Type: ``str``
 This argument passes the information to modules about their name. For more details see, the configuration option :ref:`DEFAULT_MODULE_NAME`.
 
 
-_ansible_string_conversion_action
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This argument provides instructions about what modules should do after the values of the user-specified module parameters are converted to strings. For more details, see the :ref:`STRING_CONVERSION_ACTION` configuration option.
-
-
 _ansible_keep_remote_files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -484,6 +479,7 @@ This argument provides instructions that modules must be ready if they need to k
 
 _ansible_socket
 ^^^^^^^^^^^^^^^
+
 This argument provides modules with a socket for persistent connections. The argument is created using the :ref:`PERSISTENT_CONTROL_PATH_DIR` configuration option.
 
 
@@ -501,6 +497,7 @@ _ansible_tmpdir
 Type: ``str``
 
 This argument provides instructions to modules that all commands must use the designated temporary directory, if created. The action plugin designs this temporary directory.
+
 
 Modules can access this parameter by using the public ``tmpdir`` property. The ``tmpdir`` property will create a temporary directory if the action plugin did not set the parameter.
 
