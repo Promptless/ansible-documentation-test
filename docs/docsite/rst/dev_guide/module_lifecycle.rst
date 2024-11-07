@@ -37,6 +37,22 @@ To deprecate a module in ansible-core, you must:
 * For an example of documenting deprecation, see this `PR that deprecates multiple modules <https://github.com/ansible/ansible/pull/43781/files>`_.
   Some of the elements in the PR might now be out of date.
 
+Deprecating configuration options in the Ansible main repository
+===============================================================
+
+To deprecate a configuration option in ansible-core, you must:
+
+1. Add a ``deprecated:`` block to the configuration option in the relevant configuration file, such as ``lib/ansible/config/base.yml``, with the following sub-values:
+
+   :version: A ``string``, such as ``"2.19"``, indicating the version of Ansible when the configuration option will be removed.
+   :why: Optional string that details why this option has been removed.
+   :alternatives: Inform users what they should do instead, for example, ``There is no alternative at the moment. A different mechanism would have to be implemented in the current code base.``
+
+2. Mention the deprecation in the relevant changelog (by creating a changelog fragment with a section ``removed_features``).
+3. Reference the deprecation in the relevant ``porting_guide_core_x.y.rst``.
+
+* For an example of documenting deprecation, see the `PR that removed the deprecated STRING_CONVERSION_ACTION configuration option <https://github.com/ansible/ansible/pull/84221/files>`_.
+
 Deprecating modules and plugins in a collection
 ===============================================
 
