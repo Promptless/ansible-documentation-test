@@ -870,9 +870,7 @@ dellemc.enterprise_sonic
 - Updated backend REST API request formats in all applicable modules for compatibility with SONiC 4.x openconfig YANG compliant REST APIs. (https://github.com/ansible-collections/dellemc.enterprise_sonic/pull/53)
 
 dellemc.openmanage
-~~~~~~~~~~~~~~~~~~
-
-- Added collection metadata for creating Execution Environments.
+~~~~~~~~~~~~~~~~~~- Added collection metadata for creating Execution Environments.
 - Refactored the Markdown (MD) files and content for better readability.
 - The share parameters are deprecated from the following modules - idrac_network, idrac_timezone_ntp, dellemc_configure_idrac_eventing, dellemc_configure_idrac_services, dellemc_idrac_lc_attributes, dellemc_system_lockdown_mode.
 - idrac_bios - The module is enhanced to support clear pending BIOS attributes, reset BIOS to default settings, and configure BIOS attribute using Redfish.
@@ -933,6 +931,7 @@ Ansible-core
 - Remove deprecated ``NETWORK_GROUP_MODULES`` environment variable (https://github.com/ansible/ansible/issues/77397)
 - Remove deprecated ``UnsafeProxy``
 - Remove deprecated ``plugin_filters_cfg`` config option from ``default`` section (https://github.com/ansible/ansible/issues/77398)
+- Remove deprecated ``STRING_CONVERSION_ACTION`` configuration option (https://github.com/ansible/ansible/issues/84220)
 - Remove deprecated functionality that allows loading cache plugins directly without using ``cache_loader``.
 - Remove deprecated functionality that allows subclassing ``DefaultCallback`` without the corresponding ``doc_fragment``.
 - Remove deprecated powershell functions ``Load-CommandUtils`` and ``Import-PrivilegeUtil``
@@ -940,6 +939,14 @@ Ansible-core
 - command/shell - remove deprecated ``warn`` module param
 - get_url - remove deprecated ``sha256sum`` module param
 - import_playbook - remove deprecated functionality that allows providing additional parameters in free form
+
+amazon.aws
+~~~~~~~~~~
+
+- [No content provided for this section.]ansible-core
+~~~~~~~~~~~~
+
+- Removed the deprecated configuration option ``STRING_CONVERSION_ACTION``. This option is no longer used in the Ansible Core codebase (https://github.com/ansible/ansible/issues/84220).
 
 amazon.aws
 ~~~~~~~~~~
@@ -1002,9 +1009,7 @@ cisco.nxos
 - nxos_vlan
 
 community.aws
-~~~~~~~~~~~~~
-
-- aws_kms_info - the unused and deprecated ``keys_attr`` parameter has been removed (https://github.com/ansible-collections/amazon.aws/pull/1172).
+~~~~~~~~~~~~- aws_kms_info - the unused and deprecated ``keys_attr`` parameter has been removed (https://github.com/ansible-collections/amazon.aws/pull/1172).
 - data_pipeline - the ``version`` option has always been ignored and has been removed (https://github.com/ansible-collections/community.aws/pull/1160"
 - ec2_eip - The ``wait_timeout`` option has been removed. It has always been ignored by the module (https://github.com/ansible-collections/community.aws/pull/1159).
 - ec2_lc - the ``associate_public_ip_address`` option has been removed. It has always been ignored by the module (https://github.com/ansible-collections/community.aws/pull/1158).
@@ -1014,8 +1019,13 @@ community.aws
 - s3_lifecycle - the unused parameter ``requester_pays`` has been removed (https://github.com/ansible-collections/community.aws/pull/1165).
 - s3_sync - remove unused ``retries`` parameter (https://github.com/ansible-collections/community.aws/pull/1166).
 
+ansible-core
+~~~~~~~~~~~~
+
+- The deprecated configuration option ``STRING_CONVERSION_ACTION`` has been removed. This option was scheduled for removal in Ansible 2.19 and is no longer available. Users who have been using this option should update their configurations accordingly (https://github.com/ansible/ansible/issues/84220).
+
 community.azure
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
 
 - azure_rm_aks_facts, azure_rm_aks_info - the deprecated modules have been removed. Use azure.azcollection.azure_rm_aks_info instead  (https://github.com/ansible-collections/community.azure/pull/31).
 - azure_rm_aksversion_facts, azure_rm_aksversion_info - the deprecated modules have been removed. Use azure.azcollection.azure_rm_aksversion_info instead  (https://github.com/ansible-collections/community.azure/pull/31).

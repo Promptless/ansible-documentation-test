@@ -62,11 +62,8 @@ Modules
 
 
 Noteworthy module changes
--------------------------
-
-* Ansible modules created with ``add_file_common_args=True`` added a number of undocumented arguments which were mostly there to ease implementing certain action plugins. The undocumented arguments ``src``, ``follow``, ``force``, ``content``, ``backup``, ``remote_src``, ``regexp``, ``delimiter``, and ``directory_mode`` are now no longer added. Modules relying on these options to be added need to specify them by themselves.
+-------------------------* Ansible modules created with ``add_file_common_args=True`` added a number of undocumented arguments which were mostly there to ease implementing certain action plugins. The undocumented arguments ``src``, ``follow``, ``force``, ``content``, ``backup``, ``remote_src``, ``regexp``, ``delimiter``, and ``directory_mode`` are now no longer added. Modules relying on these options to be added need to specify them by themselves.
 * Ansible no longer looks for Python modules in the current working directory (typically the ``remote_user``'s home directory) when an Ansible module is run. This is to fix becoming an unprivileged user on OpenBSD and to mitigate any attack vector if the current working directory is writable by a malicious user. Install any Python modules needed to run the Ansible modules on the managed node in a system-wide location or in another directory which is in the ``remote_user``'s ``$PYTHONPATH`` and readable by the ``become_user``.
-
 
 Plugins
 =======
@@ -81,6 +78,7 @@ Noteworthy plugin changes
 
 * Cache plugins in collections can be used to cache data from inventory plugins. Previously, cache plugins in collections could only be used for fact caching.
 * Some undocumented arguments from ``FILE_COMMON_ARGUMENTS`` have been removed; plugins using these, in particular action plugins, need to be adjusted. The undocumented arguments which were removed are ``src``, ``follow``, ``force``, ``content``, ``backup``, ``remote_src``, ``regexp``, ``delimiter``, and ``directory_mode``.
+* The deprecated configuration option ``STRING_CONVERSION_ACTION`` has been removed. Plugins or modules relying on this option need to be updated accordingly.
 
 Action plugins which execute modules should use fully-qualified module names
 ----------------------------------------------------------------------------

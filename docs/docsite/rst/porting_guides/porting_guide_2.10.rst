@@ -922,8 +922,7 @@ community.crypto
 - openssl_csr - all values for the ``version`` option except ``1`` are deprecated. The value 1 denotes the current only standardized CSR version.
 
 community.general
-~~~~~~~~~~~~~~~~~
-
+~~~~~~~~~~~~~~~~~- The configuration option `STRING_CONVERSION_ACTION` has been removed. It was deprecated and scheduled for removal in version 2.19. This option is no longer used in Ansible Core code base. There is no alternative at the moment (https://github.com/ansible/ansible/issues/84220).
 - The ldap_attr module has been deprecated and will be removed in a later release; use ldap_attrs instead.
 - airbrake_deployment - Add deprecation notice for ``token`` parameter and v2 api deploys. This feature will be removed in community.general 3.0.0.
 - clc_aa_policy - The ``wait`` option had no effect and will be removed in community.general 3.0.0.
@@ -942,7 +941,7 @@ community.general
 - xbps - the ``force`` option never had any effect. It is now deprecated, and will be removed in 3.0.0 (https://github.com/ansible-collections/community.general/pull/568).
 
 community.vmware
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 - The vmware_dns_config module has been deprecated and will be removed in a later release; use vmware_host_dns instead.
 - vca - vca_fw, vca_nat, vca_app are deprecated since these modules rely on deprecated part of Pyvcloud library.
@@ -951,7 +950,7 @@ community.vmware
 - vmware_tag_info - in a later release, the module will not return ``tag_facts`` since it does not return multiple tags with the same name and different category id. To maintain the existing behavior use ``tag_info`` which is a list of tag metadata.
 
 community.zabbix
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 - zabbix_proxy (module) - deprecates ``interface`` sub-options ``type`` and ``main`` when proxy type is set to passive through ``status=passive``. Make sure these suboptions are removed from your playbook as they were never supported by Zabbix in the first place.
 

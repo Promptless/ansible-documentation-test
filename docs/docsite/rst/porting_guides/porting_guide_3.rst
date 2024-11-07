@@ -166,9 +166,7 @@ community.aws
 - ec2_vpc_endpoint - deprecate the policy_file option and recommend using policy with a lookup (https://github.com/ansible-collections/community.aws/pull/366).
 
 community.crypto
-~~~~~~~~~~~~~~~~
-
-- acme_account_info - when ``retrieve_orders=url_list``, ``orders`` will no longer be returned in community.crypto 2.0.0. Use ``order_uris`` instead (https://github.com/ansible-collections/community.crypto/pull/178).
+~~~~~~~~~~~~~~~~- acme_account_info - when ``retrieve_orders=url_list``, ``orders`` will no longer be returned in community.crypto 2.0.0. Use ``order_uris`` instead (https://github.com/ansible-collections/community.crypto/pull/178).
 
 community.general
 ~~~~~~~~~~~~~~~~~
@@ -189,13 +187,13 @@ community.general
 - xfconf - returning output as facts is deprecated, this will be removed in community.general 4.0.0. Please register the task output in a variable and use it instead. You can already switch to the new behavior now by using the new ``disable_facts`` option (https://github.com/ansible-collections/community.general/pull/1747).
 
 Porting Guide for v3.0.0
-========================
+=======================
 
 Known Issues
 ------------
 
 dellemc.openmanage
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 - Issue 1(186024): ome_smart_fabric_uplink module does not allow the creation of multiple uplinks of the same name even though this is supported by OpenManage Enterprise Modular. If an uplink is created using the same name as an existing uplink, the existing uplink is modified.
 - Issue 2(187956): If an invalid job_id is provided, idrac_lifecycle_controller_job_status_info returns an error message. This error message does not contain information about the exact issue with the invalid job_id.
@@ -209,8 +207,13 @@ Ansible-base
 
 - ansible-galaxy login command has been removed ( see `issue 71560 <https://github.com/ansible/ansible/issues/71560>`_)
 
+Ansible-core
+~~~~~~~~~~~~
+
+- Removed deprecated configuration option ``STRING_CONVERSION_ACTION`` (see `issue 84220 <https://github.com/ansible/ansible/issues/84220>`_). It was deprecated in version 2.19.
+
 ansible.utils
-~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 - If added custom sub plugins in your collection move from old location `plugins/<sub-plugin-name>` to the new location `plugins/sub_plugins/<sub-plugin-name>` and update the imports as required
 - Move sub plugins cli_parsers, fact_diff and validate to `plugins/sub_plugins` folder

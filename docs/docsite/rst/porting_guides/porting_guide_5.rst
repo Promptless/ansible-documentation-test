@@ -444,9 +444,7 @@ Ansible-core
 - ansible-test - Tab completion anywhere other than the end of the command with the new composite options will provide incorrect results. See `issue 351 <https://github.com/kislyuk/argcomplete/issues/351>`_ for additional details.
 
 dellemc.openmanage
-~~~~~~~~~~~~~~~~~~
-
-- idrac_user - Issue(192043) Module may error out with the message ``unable to perform the import or export operation because there are pending attribute changes or a configuration job is in progress``. Wait for the job to complete and run the task again.
+~~~~~~~~~~~~~~~~~~- idrac_user - Issue(192043) Module may error out with the message ``unable to perform the import or export operation because there are pending attribute changes or a configuration job is in progress``. Wait for the job to complete and run the task again.
 - ome_device_power_settings - Issue(212679) The ome_device_power_settings module errors out with the following message if the value provided for the parameter ``power_cap`` is not within the supported range of 0 to 32767, ``Unable to complete the request because PowerCap does not  exist or is not applicable for the resource URI.``
 - ome_smart_fabric_uplink - Issue(186024) ome_smart_fabric_uplink module does not allow the creation of multiple uplinks of the same name even though it is supported by OpenManage Enterprise Modular. If an uplink is created using the same name as an existing uplink, the existing uplink is modified.
 - ome_smart_fabric_uplink - Issue(186024) ome_smart_fabric_uplink module does not allow the creation of multiple uplinks of the same name even though this is supported by OpenManage Enterprise Modular. If an uplink is created using the same name as an existing uplink, the existing uplink is modified.
@@ -476,6 +474,7 @@ Ansible-core
 - hostname - On OpenRC systems and Solaris, the ``before`` value will now be ``''`` (empty string) if the permanent hostname file does not exist, for consistency with other strategies.
 - intersect, difference, symmetric_difference, union filters - the default behavior is now to be case-sensitive (https://github.com/ansible/ansible/issues/74255)
 - unique filter - the default behavior is now to fail if Jinja2's filter fails and explicit ``case_sensitive=False`` as the Ansible's fallback is case-sensitive (https://github.com/ansible/ansible/pull/74256)
+- The configuration option ``STRING_CONVERSION_ACTION`` has been removed. This option was deprecated in Ansible 2.19 and is no longer used.
 
 amazon.aws
 ~~~~~~~~~~
@@ -998,9 +997,12 @@ community.kubernetes
 - The ``community.kubernetes`` collection is being renamed to ``kubernetes.core``. All content in the collection has been replaced by deprecated redirects to ``kubernetes.core``. If you are using FQCNs starting with ``community.kubernetes``, please update them to ``kubernetes.core`` (https://github.com/ansible-collections/community.kubernetes/pull/439).
 
 community.vmware
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~- vmware_guest_vnc -  Sphere 7.0 removed the built-in VNC server (https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-vcenter-server-70-release-notes.html#productsupport).
 
-- vmware_guest_vnc -  Sphere 7.0 removed the built-in VNC server (https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-vcenter-server-70-release-notes.html#productsupport).
+Ansible Core
+~~~~~~~~~~~~
+
+- `STRING_CONVERSION_ACTION` - This configuration option has been removed in Ansible 2.19. It was deprecated in version 2.8 and is no longer used in the Ansible Core code base. There is currently no alternative.
 
 inspur.sm
 ~~~~~~~~~
@@ -1019,13 +1021,13 @@ inspur.sm
 - edit_user_group - This feature will be removed in inspur.sm.edit_user_group 3.0.0. replaced with inspur.sm.user_group.
 
 junipernetworks.junos
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 - Deprecated router_id from ospfv2 resource module.
 - Deprecated router_id from ospfv3 resource module.
 - The junos_logging module has been deprecated in favor of the new junos_logging_global resource module and will be removed in a release after '2023-08-01'.
 
 vyos.vyos
-~~~~~~~~~
+~~~~~~~~
 
 - The vyos_logging module has been deprecated in favor of the new vyos_logging_global resource module and will be removed in a release after "2023-08-01".

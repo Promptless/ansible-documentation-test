@@ -403,9 +403,7 @@ Operates verbose logging and logging of external commands that a module executes
 _ansible_diff
 ^^^^^^^^^^^^^
 
-Type: ``bool``
-
-With this parameter you can configure your module to show a unified diff of changes that will be applied to the templated files. To access ``_ansible_diff`` in a module, instantiate the ``AnsibleModule`` utility and access :attr:`AnsibleModule._diff`. You can also access this parameter using the ``diff`` keyword in your playbook, or the relevant environment variable. For more details, see :ref:`playbook_keywords` and the :ref:`DIFF_ALWAYS` configuration option.
+Type: ``bool``With this parameter you can configure your module to show a unified diff of changes that will be applied to the templated files. To access ``_ansible_diff`` in a module, instantiate the ``AnsibleModule`` utility and access :attr:`AnsibleModule._diff`. You can also access this parameter using the ``diff`` keyword in your playbook, or the relevant environment variable. For more details, see :ref:`playbook_keywords` and the :ref:`DIFF_ALWAYS` configuration option.
 
 
 _ansible_verbosity
@@ -417,7 +415,7 @@ You can use this argument to control the level (0 for none) of verbosity in logg
 
 
 _ansible_selinux_special_fs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Type: ``list``
 Elements: ``strings``
@@ -469,11 +467,6 @@ Type: ``str``
 This argument passes the information to modules about their name. For more details see, the configuration option :ref:`DEFAULT_MODULE_NAME`.
 
 
-_ansible_string_conversion_action
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This argument provides instructions about what modules should do after the values of the user-specified module parameters are converted to strings. For more details, see the :ref:`STRING_CONVERSION_ACTION` configuration option.
-
-
 _ansible_keep_remote_files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -484,6 +477,7 @@ This argument provides instructions that modules must be ready if they need to k
 
 _ansible_socket
 ^^^^^^^^^^^^^^^
+
 This argument provides modules with a socket for persistent connections. The argument is created using the :ref:`PERSISTENT_CONTROL_PATH_DIR` configuration option.
 
 

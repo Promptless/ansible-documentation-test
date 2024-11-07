@@ -742,9 +742,7 @@ Removed Collections
 - purestorage.fusion (previously included version: 1.6.0)
 
 Removed Features
-----------------
-
-- The ``community.azure`` collection was considered unmaintained and has been removed from Ansible 10 (`https://github.com/ansible-community/community-topics/issues/263 <https://github.com/ansible-community/community-topics/issues/263>`__).
+----------------- The ``community.azure`` collection was considered unmaintained and has been removed from Ansible 10 (`https://github.com/ansible-community/community-topics/issues/263 <https://github.com/ansible-community/community-topics/issues/263>`__).
   Users can still install this collection with ``ansible-galaxy collection install community.azure``.
 - The ``gluster.gluster`` collection was considered unmaintained and has been removed from Ansible 10 (`https://github.com/ansible-community/community-topics/issues/225 <https://github.com/ansible-community/community-topics/issues/225>`__).
   Users can still install this collection with ``ansible-galaxy collection install gluster.gluster``.
@@ -771,6 +769,7 @@ Ansible-core
 - Remove deprecated JINJA2_NATIVE_WARNING environment variable (https://github.com/ansible/ansible/issues/81714)
 - Remove deprecated ``scp_if_ssh`` from ssh connection plugin (https://github.com/ansible/ansible/issues/81715).
 - Remove deprecated crypt support from ansible.utils.encrypt (https://github.com/ansible/ansible/issues/81717)
+- Removed deprecated STRING_CONVERSION_ACTION (https://github.com/ansible/ansible/issues/84220).
 - Removed Python 2.7 and Python 3.6 as a supported remote version. Python 3.7+ is now required for target execution.
 - With the removal of Python 2 support, the yum module and yum action plugin are removed and redirected to ``dnf``.
 
@@ -782,7 +781,7 @@ amazon.aws
 - module_utils.policy - the previously deprecated ``sort_json_policy_dict()`` function has been removed, consider using ``compare_policies()`` instead (https://github.com/ansible-collections/amazon.aws/pull/2052).
 
 arista.eos
-~~~~~~~~~~
+~~~~~~~~~
 
 - Remove depreacted eos_bgp module which is replaced with eos_bgp_global and eos_bgp_address_family.
 - Remove deprecated eos_logging module which is replaced with eos_logging_global resource module.
@@ -831,9 +830,9 @@ community.general
 - webfaction_* modules - these modules relied on HTTPS APIs that do not exist anymore and were thus removed (https://github.com/ansible-collections/community.general/pull/8198).
 
 community.grafana
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~- removed deprecated `message` argument in `grafana_dashboard`
 
-- removed deprecated `message` argument in `grafana_dashboard`
+- Removed deprecated ``STRING_CONVERSION_ACTION`` configuration option.
 
 community.hrobot
 ~~~~~~~~~~~~~~~~
@@ -841,7 +840,7 @@ community.hrobot
 - The collection no longer supports Ansible, ansible-base, and ansible-core releases that are currently End of Life at the time of the 2.0.0 release. This means that Ansible 2.9, ansible-base 2.10, ansible-core 2.11, ansible-core 2.12, and ansible-core 2.13 are no longer supported. The collection might still work with these versions, but it can stop working at any moment without advance notice, and this will not be considered a bug (https://github.com/ansible-collections/community.hrobot/pull/101).
 
 junipernetworks.junos
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 - Remove deprected junos_logging module which is replaced by junos_logging_global resource module.
 
@@ -860,7 +859,7 @@ Ansible-core
 - The 'required' parameter in 'ansible.module_utils.common.process.get_bin_path' API is deprecated (https://github.com/ansible/ansible/issues/82464).
 - ``module_utils`` - importing the following convenience helpers from ``ansible.module_utils.basic`` has been deprecated: ``get_exception``, ``literal_eval``, ``_literal_eval``, ``datetime``, ``signal``, ``types``, ``chain``, ``repeat``, ``PY2``, ``PY3``, ``b``, ``binary_type``, ``integer_types``, ``iteritems``, ``string_types``, ``test_type``, ``map`` and ``shlex_quote``.
 - ansible-doc - role entrypoint attributes are deprecated and eventually will no longer be shown in ansible-doc from ansible-core 2.20 on (https://github.com/ansible/ansible/issues/82639, https://github.com/ansible/ansible/pull/82678).
-- paramiko connection plugin, configuration items in the global scope are being deprecated and will be removed in favor or the existing same options in the plugin itself. Users should not need to change anything (how to configure them are the same) but plugin authors using the global constants should move to using the plugin's get_option().
+- paramiko connection plugin, configuration items in the global scope are being deprecated and will be removed in favor of the existing same options in the plugin itself. Users should not need to change anything (how to configure them are the same) but plugin authors using the global constants should move to using the plugin's get_option().
 
 amazon.aws
 ~~~~~~~~~~
@@ -883,28 +882,10 @@ community.aws
 - ecs_service - updated the deprecation for updated default of ``purge_placement_strategy``, the current default of ``False`` will be changed to ``True`` in release ``9.0.0``.  To maintain the current behaviour explicitly set ``purge_placement_strategy=False`` (https://github.com/ansible-collections/community.aws/pull/1716).
 
 community.crypto
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~Ansible-core
+~~~~~~~~~~~~
 
-- acme documentation fragment - the default ``community.crypto.acme[.documentation]`` docs fragment is deprecated and will be removed from community.crypto 3.0.0. Replace it with both the new ``community.crypto.acme.basic`` and ``community.crypto.acme.account`` fragments (https://github.com/ansible-collections/community.crypto/pull/735).
-- acme.backends module utils - from community.crypto on, all implementations of ``CryptoBackend`` must override ``get_ordered_csr_identifiers()``. The current default implementation, which simply sorts the result of ``get_csr_identifiers()``, will then be removed (https://github.com/ansible-collections/community.crypto/pull/725).
-- acme.backends module utils - the ``get_cert_information()`` method for a ACME crypto backend must be implemented from community.crypto 3.0.0 on (https://github.com/ansible-collections/community.crypto/pull/736).
-- crypto.module_backends.common module utils - the ``crypto.module_backends.common`` module utils is deprecated and will be removed from community.crypto 3.0.0. Use the improved ``argspec`` module util instead (https://github.com/ansible-collections/community.crypto/pull/749).
-- openssl_csr_pipe, openssl_privatekey_pipe, x509_certificate_pipe - the current behavior of check mode is deprecated and will change in community.crypto 3.0.0. The current behavior is similar to the modules without ``_pipe``: if the object needs to be (re-)generated, only the ``changed`` status is set, but the object is not updated. From community.crypto 3.0.0 on, the modules will ignore check mode and always act as if check mode is not active. This behavior can already achieved now by adding ``check_mode: false`` to the task. If you think this breaks your use-case of this module, please `create an issue in the community.crypto repository <https://github.com/ansible-collections/community.crypto/issues/new/choose>`__ (https://github.com/ansible-collections/community.crypto/issues/712, https://github.com/ansible-collections/community.crypto/pull/714).
-
-community.dns
-~~~~~~~~~~~~~
-
-- hetzner_dns_records and hosttech_dns_records inventory plugins - the ``filters`` option has been renamed to ``simple_filters``. The old name will stop working in community.hrobot 2.0.0 (https://github.com/ansible-collections/community.dns/pull/181).
-
-community.docker
-~~~~~~~~~~~~~~~~
-
-- docker_compose - the Docker Compose v1 module is deprecated and will be removed from community.docker 4.0.0. Please migrate to the ``community.docker.docker_compose_v2`` module, which works with Docker Compose v2 (https://github.com/ansible-collections/community.docker/issues/823, https://github.com/ansible-collections/community.docker/pull/833).
-- docker_container - the default ``ignore`` for the ``image_name_mismatch`` parameter has been deprecated and will switch to ``recreate`` in community.docker 4.0.0. A deprecation warning will be printed in situations where the default value is used and where a behavior would change once the default changes (https://github.com/ansible-collections/community.docker/pull/703).
-- various modules and plugins - the ``ssl_version`` option has been deprecated and will be removed from community.docker 4.0.0. It has already been removed from Docker SDK for Python 7.0.0, and was only necessary in the past to work around SSL/TLS issues (https://github.com/ansible-collections/community.docker/pull/853).
-
-community.general
-~~~~~~~~~~~~~~~~~
+- The configuration option ``STRING_CONVERSION_ACTION`` has been removed in Ansible 2.19. It was deprecated in Ansible 2.8 and scheduled for removal in 2.19. Users should remove any usage of this option from their configuration files, as it is no longer recognized (https://github.com/ansible/ansible/issues/84220).
 
 - MH DependencyCtxMgr module_utils - deprecate ``module_utils.mh.mixin.deps.DependencyCtxMgr`` in favour of ``module_utils.deps`` (https://github.com/ansible-collections/community.general/pull/8280).
 - ModuleHelper module_utils - deprecate ``plugins.module_utils.module_helper.AnsibleModule`` (https://github.com/ansible-collections/community.general/pull/8280).

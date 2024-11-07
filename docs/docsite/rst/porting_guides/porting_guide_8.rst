@@ -413,9 +413,7 @@ community.ciscosmb
 - support for ansible 2.9
 
 community.general
-~~~~~~~~~~~~~~~~~
-
-- CmdRunner module utils - deprecate ``cmd_runner_fmt.as_default_type()`` formatter (https://github.com/ansible-collections/community.general/pull/6601).
+~~~~~~~~~~~~~~~~~- CmdRunner module utils - deprecate ``cmd_runner_fmt.as_default_type()`` formatter (https://github.com/ansible-collections/community.general/pull/6601).
 - MH VarsMixin module utils - deprecates ``VarsMixin`` and supporting classes in favor of plain ``vardict`` module util (https://github.com/ansible-collections/community.general/pull/6649).
 - cpanm - value ``compatibility`` is deprecated as default for parameter ``mode`` (https://github.com/ansible-collections/community.general/pull/6512).
 - redhat module utils - the ``module_utils.redhat`` module is deprecated, as
@@ -448,6 +446,11 @@ microsoft.ad
 
 purestorage.fusion
 ~~~~~~~~~~~~~~~~~~
+
+Ansible Core
+~~~~~~~~~~~~
+
+- Removed the deprecated configuration option ``STRING_CONVERSION_ACTION`` (https://github.com/ansible/ansible/issues/84220).
 
 - fusion_api_client - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
 - fusion_array - 'app_id' and 'key_file' parameters are deprecated in favor of 'issuer_id' and 'private_key_file' parameters and will be removed in the version 2.0.0, FUSION_APP_ID and FUSION_HOST env variables are deprecated in favor of FUSION_ISSUER_ID and FUSION_HOST and will be removed in the version 2.0.0
@@ -814,16 +817,15 @@ Deprecated Features
 - The netapp.aws collection is considered unmaintained and will be removed from Ansible 10 if no one starts maintaining it again before Ansible 10. See `the removal process for details on how this works <https://github.com/ansible-collections/overview/blob/main/removal_from_ansible.rst#cancelling-removal-of-an-unmaintained-collection>`__ (https://github.com/ansible-community/community-topics/issues/223).
 
 Ansible-core
-~~~~~~~~~~~~
-
-- The ``ConnectionBase()._new_stdin`` attribute is deprecated, use ``display.prompt_until(msg)`` instead.
+~~~~~~~~~~~~- The ``ConnectionBase()._new_stdin`` attribute is deprecated, use ``display.prompt_until(msg)`` instead.
 - ansible-test - The ``foreman`` test plugin is now deprecated. It will be removed in a future release.
 - ansible-test - The ``govcsim`` simulator in the ``vcenter`` test plugin is now deprecated. It will be removed in a future release. Users should switch to providing their own test environment through a static configuration file.
 - password_hash - deprecate using passlib.hash.hashtype if hashtype isn't in the list of documented choices.
 - vars - Specifying a list of dictionaries for ``vars:`` is deprecated in favor of specifying a dictionary.
+- The configuration option ``STRING_CONVERSION_ACTION`` has been removed. It was deprecated in version 2.19 and is no longer used.
 
 amazon.aws
-~~~~~~~~~~
+~~~~~~~~~
 
 - amazon.aws collection - due to the AWS SDKs Python support policies (https://aws.amazon.com/blogs/developer/python-support-policy-updates-for-aws-sdks-and-tools/) support for Python less than 3.8 by this collection is expected to be removed in a release after 2024-12-01 (https://github.com/ansible-collections/amazon.aws/pull/1342).
 - amazon.aws collection - due to the AWS SDKs announcing the end of support for Python less than 3.7 (https://aws.amazon.com/blogs/developer/python-support-policy-updates-for-aws-sdks-and-tools/) support for Python less than 3.7 by this collection has been deprecated and will be removed in release 7.0.0. (https://github.com/ansible-collections/amazon.aws/pull/1342).
@@ -839,9 +841,7 @@ amazon.aws
 - support for passing both profile and security tokens through a mix of environment variables and parameters has been deprecated and support will be removed in release 6.0.0. After release 6.0.0 it will only be possible to pass either a profile or security tokens, regardless of mechanism used to pass them.  To explicitly block a parameter coming from an environment variable pass an empty string as the parameter value.  Support for passing profile and security tokens together was originally deprecated in release 1.2.0, however only partially implemented in release 5.0.0 (https://github.com/ansible-collections/amazon.aws/pull/1355).
 
 check_point.mgmt
-~~~~~~~~~~~~~~~~
-
-- add/set/delete nat-rule modules - will be replaced by the single cp_mgmt_nat_rule module.
+~~~~~~~~~~~~~~~- add/set/delete nat-rule modules - will be replaced by the single cp_mgmt_nat_rule module.
 - cp_mgmt_show_task/s modules - will be replaced by the by the single cp_mgmt_task_facts module.
 
 chocolatey.chocolatey
@@ -872,17 +872,22 @@ community.aws
 - iam_role_info - In a release after 2023-12-01 the contents of ``assume_role_policy_document`` will no longer be converted from CamelCase to snake_case.  The ``assume_role_policy_document_raw`` return value already returns the policy document in this future format (https://github.com/ansible-collections/community.aws/issues/551).
 
 community.crypto
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 - x509_crl - the ``mode`` option is deprecated; use ``crl_mode`` instead. The ``mode`` option will change its meaning in community.crypto 3.0.0, and will refer to the CRL file's mode instead (https://github.com/ansible-collections/community.crypto/issues/596).
 
 community.dns
-~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 - The default of the newly added option ``txt_character_encoding`` will change from ``octal`` to ``decimal`` in community.dns 3.0.0. The new default will be compatible with `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__ (https://github.com/ansible-collections/community.dns/pull/134).
 
 community.general
 ~~~~~~~~~~~~~~~~~
+
+Ansible Core
+~~~~~~~~~~~~
+
+- The configuration option ``STRING_CONVERSION_ACTION`` has been removed. It was deprecated in ansible-core 2.8 and is no longer available in ansible-core 2.19 (Ansible 8). Remove it from your configuration as it is no longer in use.
 
 - ModuleHelper module_utils - ``deps`` mixin for MH classes deprecated in favour of using the ``deps`` module_utils (https://github.com/ansible-collections/community.general/pull/6465).
 - consul - deprecate using parameters unused for ``state=absent`` (https://github.com/ansible-collections/community.general/pull/5772).

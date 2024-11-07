@@ -769,43 +769,10 @@ Ansible-core
 - stat - removed unused `get_md5` parameter.
 
 ansible.windows
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~Ansible Core
+~~~~~~~~~~~~
 
-- win_get_url - Removed the deprecated option alias ``passwordd``, use ``url_password`` instead.
-- win_get_url - Removed the deprecated option alias ``user`` and ``username``, use ``url_username`` instead.
-- win_package - Removed deprecated module option ``ensure``, use ``state`` instead.
-- win_package - Removed deprecated module option ``productid``, use ``product_id`` instead.
-- win_package - Removed deprecated module option ``username``, ``user_name``, ``password``, and ``user_password``. Use ``become`` with ``become_flags: logon_type=new_credentials logon_flags=netcredentials_only`` on the task instead to replicate the same functionality instead.
-- win_reboot - Removed backwards compatibility check where ``ignore_errors: true`` will be treated like ``ignore_unreachable: true``. Going forward ``ignore_errors: true`` will only ignore errors the plugin encountered and not an unreachable host. Use ``ignore_unreachable: true`` to ignore that error like any other module.
-- win_regedit - Removed support for using a ``path`` with forward slashes as a key separator. Using a forward slash has been deprecated since Ansible 2.9. If using forward slashes in the ``win_regedit`` ``path`` value, make sure to change the forward slash ``/`` to a backslash ``\``. If enclosed in double quotes the backslash will have to be doubled up.
-- win_updates - Removed deprecated alias ``blacklist``, use ``reject_list`` instead.
-- win_updates - Removed deprecated alias ``whitelist``, use ``accept_list`` instead.
-- win_updates - Removed deprecated module option ``use_scheduled_task``. This option did not change any functionality in the module and can be safely removed from the task entry.
-- win_uri - Removed the deprecated option alias ``password``, use ``url_password`` instead.
-- win_uri - Removed the deprecated option alias ``user`` and ``username``, use ``url_username`` instead.
-
-cisco.ios
-~~~~~~~~~
-
-- Deprecated ios_logging module in favor of ios_logging_global.
-- Deprecated next_hop_self attribute for bgp_address_family with nexthop_self.
-
-cisco.nxos
-~~~~~~~~~~
-
-- The nxos_bgp module has been removed with this release.
-- The nxos_bgp_af module has been removed with this release.
-- The nxos_bgp_neighbor module has been removed with this release.
-- The nxos_bgp_neighbor_af module has been removed with this release.
-
-community.ciscosmb
-~~~~~~~~~~~~~~~~~~
-
-- remove testing for Python 2.6 nad 2.7
-- remove testing for ansible 2.9
-
-community.general
-~~~~~~~~~~~~~~~~~
+- Removed the deprecated configuration option ``STRING_CONVERSION_ACTION``. This option is no longer used in the Ansible Core code base. If you have this option set in your configuration files, you can safely remove it.
 
 - The collection no longer supports ansible-core 2.11 and ansible-core 2.12. Parts of the collection might still work on these ansible-core versions, but others might not (https://github.com/ansible-collections/community.general/pull/7269).
 - ansible_galaxy_install - support for Ansible 2.9 and ansible-base 2.10 has been removed (https://github.com/ansible-collections/community.general/pull/7358).
@@ -891,13 +858,11 @@ Deprecated Features
   Please update your FQCNs from ``t_systems_mms.icinga_director`` to ``telekom_mms.icinga_director``.
 
 Ansible-core
-~~~~~~~~~~~~
-
-- Deprecated ini config option ``collections_paths``, use the singular form ``collections_path`` instead
+~~~~~~~~~~~~- Deprecated ini config option ``collections_paths``, use the singular form ``collections_path`` instead
 - Deprecated the env var ``ANSIBLE_COLLECTIONS_PATHS``, use the singular form ``ANSIBLE_COLLECTIONS_PATH`` instead
 - Old style vars plugins which use the entrypoints `get_host_vars` or `get_group_vars` are deprecated. The plugin should be updated to inherit from `BaseVarsPlugin` and define a `get_vars` method as the entrypoint.
 - Support for Windows Server 2012 and 2012 R2 has been removed as the support end of life from Microsoft is October 10th 2023. These versions of Windows will no longer be tested in this Ansible release and it cannot be guaranteed that they will continue to work going forward.
-- ``STRING_CONVERSION_ACTION`` config option is deprecated as it is no longer used in the Ansible Core code base.
+- ``STRING_CONVERSION_ACTION`` config option has been removed as it is no longer used in the Ansible Core code base.
 - the 'smart' option for setting a connection plugin is being removed as its main purpose (choosing between ssh and paramiko) is now irrelevant.
 - vault and unfault filters - the undocumented ``vaultid`` parameter is deprecated and will be removed in ansible-core 2.20. Use ``vault_id`` instead.
 - yum_repository - deprecated parameter 'keepcache' (https://github.com/ansible/ansible/issues/78693).
