@@ -218,7 +218,116 @@ When coding with ``module_utils`` in a collection, the Python import statement n
 
 	You need to follow the same rules in changing paths and using namespaced names for subclassed plugins.
 
-The following example code snippets show a Python and a PowerShell module using both default Ansible ``module_utils`` and those provided by a collection. In this example the namespace is ``ansible_example`` and the collection is ``community``.I'm sorry, I need the specific context of the code changes and the current document content to provide an updated version of the documentation. Could you please provide those details?
+The following example code snippets show a Python and a PowerShell module using both default Ansible ``module_utils`` and those provided by a collection. In this example the namespace is ``ansible_example`` and the collection is ``community``.
+
+In the Python example the ``module_utils`` is ``helper`` and the :abbr:`FQCN (Fully Qualified Collection Name)` is ``ansible_example.community.plugins.module_utils.helper``:
+
+.. code-block:: text
+
+  from ansible.module_utils.basic import AnsibleModule
+  from ansible.module_utils.common.text.converters import to_text
+  from ansible.module_utils.six.moves.urllib.parse import urlencode
+  from ansible.module_utils.six.moves.urllib.error import HTTPError
+  from ansible_collections.ansible_example.community.plugins.module_utils.helper import HelperRequest
+
+  argspec = dict(
+	  name=dict(required=True, type='str'),
+	  state=dict(choices=['present', 'absent'], required=True),
+  )
+
+  module = AnsibleModule(
+	  argument_spec=argspec,
+	  supports_check_mode=True
+  )
+
+  _request = HelperRequest(
+  	module,
+	  headers={"Content-Type": "application/json"},
+       data=data
+ )
+
+In the PowerShell example the ``module_utils`` is ``hyperv`` and the :abbr:`FQCN (Fully Qualified Collection Name)` is ``ansible_example.community.plugins.module_utils.hyperv``:
+
+.. code-block:: powershell
+
+  #!powershell
+  #AnsibleRequires -CSharpUtil Ansible.Basic
+  #AnsibleRequires -PowerShell ansible_collections.ansible_example.community.plugins.module_utils.hyperv
+
+  $spec = @{
+	  name = @{ required = $true; type = "str" }
+  	state = @{ required = $true; choices = @("present", "absent") }
+  }
+  $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
+
+  Invoke-HyperVFunction -Name $module.Params.name
+
+  $module.ExitJson()
+
+
+.. _update_init_role:
+
+Importing from __init__.py
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Because of the way that the CPython interpreter does imports, combined with the way the Ansible plugin loader works, if your custom embedded module or plugin requires importing something from an :file:`__init__.py` file, that also becomes part of your collection. You can either originate the content inside a standalone role or use the file name in the Python import statement. The following example is an :file:`__init__.py` file that is part of a callback plugin found inside a collection named ``ansible_example.community``.
+
+.. code-block:: python
+
+  from ansible_collections.ansible_example.community.plugins.callback.__init__ import CustomBaseClass
+
+
+Example: Migrating a standalone role with plugins to a collection
+-----------------------------------------------------------------
+
+In this example we have a standalone role called ``my-standalone-role.webapp`` to emulate a standalone role that contains dashes in the name (which is not valid in collections). This standalone role contains a custom module in the ``library/`` directory called ``manage_webserver``.
+
+.. code-block:: bash
+
+  my-standalone-role.webapp
+  ├── defaults
+  ├── files
+  ├── handlers
+  ├── library
+  ├── meta
+  ├── tasks
+  ├── templates
+  ├── tests
+  └── vars
+
+1. Create a new collection, for example, ``acme.webserver``:
+
+.. code-block:: bash
+
+  $ ansible-galaxy collection init acme.webserver
+  - Collection acme.webserver was created successfully
+  $ tree acme -d 1
+  acme
+  └── webserver
+	 ├── docs
+	 ├── plugins
+	 └── roles
+
+2. Create the ``webapp`` role inside the collection and copy all contents from the standalone role:
+
+.. code-block:: bash
+
+  $ mkdir acme/webserver/roles/webapp
+  $ cp my-standalone-role.webapp/* acme/webserver/roles/webapp/
+
+3. Move the ``manage_webserver`` module to its new home in ``acme/webserver/plugins/modules/``:
+
+.. code-block:: bash
+
+  $ cp my-standalone-role.webapp/library/manage_webserver.py acme/webserver/plugins/modules/manage.py
+
+.. note::
+
+  This example changed the original source file ``manage_webserver.py`` to the destination file ``manage.py``. This is optional but the :abbr:`FQCN (Fully Qualified Collection Name)` provides the ``webserver`` context as ``acme.webserver.manage``.
+
+4. Change ``manage_webserver`` to ``acme.webserver.manage`` in :file:`tasks/` files in the role ( for example, ``my-standalone-role.webapp/tasks/main.yml``) and any use of the original module name.
+
+.. note::
 
   This name change is only required if you changed the original module name, but illustrates content referenced by :abbr:`FQCN (Fully Qualified Collection Name)` can offer context and in turn can make module and plugin names shorter. If you anticipate using these modules independent of the role, keep the original naming conventions. Users can add the  :ref:`collections keyword <collections_using_playbook>` in their playbooks. Typically roles are an abstraction layer and users won't use components of the role independently.
 
