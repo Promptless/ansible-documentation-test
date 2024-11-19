@@ -31,46 +31,7 @@ The ``validate-modules`` tool has a `schema.py <https://github.com/ansible/ansib
 
 
 Codes
-------
-
-============================================================   ==================   ====================   =========================================================================================
-  **Error Code**                                                 **Type**             **Level**            **Sample Message**
-------------------------------------------------------------   ------------------   --------------------   -----------------------------------------------------------------------------------------
-  ansible-deprecated-module                                    Documentation        Error                  A module is deprecated and supposed to be removed in the current or an earlier Ansible version
-  collection-deprecated-module                                 Documentation        Error                  A module is deprecated and supposed to be removed in the current or an earlier collection version
-  ansible-deprecated-version                                   Documentation        Error                  A feature is deprecated and supposed to be removed in the current or an earlier Ansible version
-  ansible-module-not-initialized                               Syntax               Error                  Execution of the module did not result in initialization of AnsibleModule
-  collection-deprecated-version                                Documentation        Error                  A feature is deprecated and supposed to be removed in the current or an earlier collection version
-  deprecated-date                                              Documentation        Error                  A date before today appears as ``removed_at_date`` or in ``deprecated_aliases``
-  deprecation-mismatch                                         Documentation        Error                  Module marked as deprecated or removed in at least one of the file name, its metadata, or in DOCUMENTATION (setting DOCUMENTATION.deprecated for deprecation or removing all Documentation for removed) but not in all three places.
-  doc-choices-do-not-match-spec                                Documentation        Error                  Value for "choices" from the argument_spec does not match the documentation
-  doc-choices-incompatible-type                                Documentation        Error                  Choices value from the documentation is not compatible with type defined in the argument_spec
-  doc-default-does-not-match-spec                              Documentation        Error                  Value for "default" from the argument_spec does not match the documentation
-  doc-default-incompatible-type                                Documentation        Error                  Default value from the documentation is not compatible with type defined in the argument_spec
-  doc-elements-invalid                                         Documentation        Error                  Documentation specifies elements for argument, when "type" is not ``list``.
-  doc-elements-mismatch                                        Documentation        Error                  Argument_spec defines elements different than documentation does
-  doc-missing-type                                             Documentation        Error                  Documentation doesn't specify a type but argument in ``argument_spec`` use default type (``str``)
-  doc-required-mismatch                                        Documentation        Error                  argument in argument_spec is required but documentation says it is not, or vice versa
-  doc-type-does-not-match-spec                                 Documentation        Error                  Argument_spec defines type different than documentation does
-  documentation-error                                          Documentation        Error                  Unknown ``DOCUMENTATION`` error
-  documentation-syntax-error                                   Documentation        Error                  Invalid ``DOCUMENTATION`` schema
-  import-before-documentation                                  Imports              Error                  Import found before documentation variables. All imports must appear below ``DOCUMENTATION``/``EXAMPLES``/``RETURN``
-  import-error                                                 Documentation        Error                  ``Exception`` attempting to import module for ``argument_spec`` introspection
-  attributes-check-mode                                        Documentation        Error                  If a module documents the ``check_mode`` attribute, its ``support`` value must be compatible with the ``supports_check_mode`` parameter of ``AnsibleModule``
-  attributes-check-mode-details                                Documentation        Error                  If a module documents the ``check_mode`` attribute with support values ``partial`` or ``N/A``, it must provide ``details``
-  import-placement                                             Locations            Warning                Imports should be directly below ``DOCUMENTATION``/``EXAMPLES``/``RETURN``
-  imports-improper-location                                    Imports              Error                  Imports should be directly below ``DOCUMENTATION``/``EXAMPLES``/``RETURN``
-  incompatible-choices                                         Documentation        Error                  Choices value from the argument_spec is not compatible with type defined in the argument_spec
-  incompatible-default-type                                    Documentation        Error                  Default value from the argument_spec is not compatible with type defined in the argument_spec
-  invalid-argument-name                                        Documentation        Error                  Argument in argument_spec must not be one of 'message', 'syslog_facility' as it is used internally by Ansible Core Engine
-  invalid-argument-spec                                        Documentation        Error                  Argument in argument_spec must be a dictionary/hash when used
-  invalid-argument-spec-options                                Documentation        Error                  Suboptions in argument_spec are invalid
-  invalid-documentation                                        Documentation        Error                  ``DOCUMENTATION`` is not valid YAML
-  invalid-documentation-markup                                 Documentation        Error                  ``DOCUMENTATION`` or ``RETURN`` contains invalid markup
-  invalid-documentation-options                                Documentation        Error                  ``DOCUMENTATION.options`` must be a dictionary/hash when used
-  invalid-examples                                             Documentation        Error                  ``EXAMPLES`` is not valid YAML
-  invalid-extension                                            Naming               Error                  Official Ansible modules must have a ``.py`` extension for python modules or a ``.ps1`` for powershell modules
-  invalid-module-schema                                        Documentation        Error                  ``AnsibleModule`` schema validation error
+------I'm sorry, I need the specific context of the code changes and the current document content to provide an updated version of the documentation. Could you please provide those details?
   invalid-removal-version                                      Documentation        Error                  The version at which a feature is supposed to be removed cannot be parsed (for collections, it must be a `semantic version <https://semver.org/>`_)
   invalid-requires-extension                                   Naming               Error                  Module ``#AnsibleRequires -CSharpUtil`` should not end in .cs, Module ``#Requires`` should not end in .psm1
   missing-doc-fragment                                         Documentation        Error                  ``DOCUMENTATION`` fragment missing
